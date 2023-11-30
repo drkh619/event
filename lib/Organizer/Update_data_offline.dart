@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 
 import '../main.dart';
@@ -42,6 +43,7 @@ class _Update_data_offlineState extends State<Update_data_offline> {
 
   TextEditingController eventName = TextEditingController();
   TextEditingController eventEndDate = TextEditingController();
+  TextEditingController eventStartDate = TextEditingController();
   TextEditingController eventCapacity = TextEditingController();
   TextEditingController eventDescription = TextEditingController();
 
@@ -82,6 +84,7 @@ class _Update_data_offlineState extends State<Update_data_offline> {
     request.fields['id'] = widget.data_user.id.toString();
     request.fields['event_name'] = eventName.text;
     request.fields['event_end_date'] = eventEndDate.text;
+    request.fields['event_start_date'] = eventStartDate.text;
     request.fields['event_capacity'] = eventCapacity.text;
     request.fields['event_description'] = eventDescription.text;
     if (_image != null) {
@@ -112,6 +115,7 @@ class _Update_data_offlineState extends State<Update_data_offline> {
   void initState() {
     eventName = TextEditingController(text: widget.data_user.event_name);
     eventEndDate = TextEditingController(text: widget.data_user.event_end_date);
+    eventStartDate = TextEditingController(text: widget.data_user.event_start_date);
     eventCapacity = TextEditingController(text: widget.data_user.event_capacity);
     eventDescription = TextEditingController(text: widget.data_user.event_description);
 
@@ -123,7 +127,7 @@ class _Update_data_offlineState extends State<Update_data_offline> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Edit Online Event",
+          "Edit Offline Event",
           style: TextStyle(
             color: Theme.of(context).primaryColor,
             fontFamily: GoogleFonts.prompt().fontFamily,
@@ -180,39 +184,61 @@ class _Update_data_offlineState extends State<Update_data_offline> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-                child: TextFormField(
-                  controller: eventEndDate,
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(
-                        color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
+                padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                child: GestureDetector(
+                  onTap: () async {
+                    DateTime? selectedStartDate = eventStartDate.text.isNotEmpty
+                        ? DateFormat('dd-MM-yyyy').parse(eventStartDate.text)
+                        : DateTime.now();
+
+                    final selectedDate = await showDatePicker(
+                      context: context,
+                      initialDate: selectedStartDate,
+                      firstDate: selectedStartDate, // Set the first date to the selected start date
+                      lastDate: DateTime(2100),
+                    );
+
+                    if (selectedDate != null) {
+                      final formattedDate = DateFormat('dd-MM-yyyy').format(selectedDate);
+                      setState(() {
+                        eventEndDate.text = formattedDate; // Update the event end date field
+                      });
+                    }
+                  },
+                  child: AbsorbPointer(
+                    child: TextFormField(
+                      controller: eventEndDate,
+                      keyboardType: TextInputType.text,
+                      style: TextStyle(
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white
+                            : Colors.black,
+                      ),
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            color: Theme.of(context).brightness == Brightness.dark
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            color: Theme.of(context).brightness == Brightness.dark
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                        ),
+                        labelText: "Tap to choose event end date",
+                        hintText: "Tap to choose event end date",
+                        hintStyle: TextStyle(color: Colors.grey),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
                       ),
                     ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(
-                        color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
-                      ),
-                    ),
-                    labelText: "Select End Date",
-                    labelStyle: TextStyle(color: Colors.grey),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    suffixIcon: GestureDetector(
-                      onTap: () {
-                        _selectEndDate(context);
-                      },
-                      child: Icon(Icons.calendar_today),
-                    ),
-                  ),
-                  showCursor: false,
-                  readOnly: true,
-                  style: TextStyle(
-                    color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
                   ),
                 ),
               ),
@@ -249,7 +275,8 @@ class _Update_data_offlineState extends State<Update_data_offline> {
                 padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
                 child: TextFormField(
                   controller: eventDescription,
-                  keyboardType: TextInputType.text,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: 4,
                   style: TextStyle(color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black),
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(

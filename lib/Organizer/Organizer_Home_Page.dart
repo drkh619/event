@@ -20,8 +20,9 @@ class Organizer_HomePage extends StatelessWidget {
       appBar: AppBar(
         // title: Text("Organizer Home Page"),
        // title: Text(userid),
-        title: userid == null ? SizedBox() :Text("Organiser Homepage"),
+        title: userid == null ? SizedBox() :Text("Organiser Homepage", style: TextStyle(color: Colors.white),),
         // userid
+        iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: Theme.of(context).primaryColor,
         actions: [
           IconButton(
@@ -36,7 +37,8 @@ class Organizer_HomePage extends StatelessWidget {
                 ),
               );
             },
-            icon: Icon(Icons.exit_to_app),
+            icon: Icon(Icons.exit_to_app,color: Colors.white
+            ),
           ),
         ],
       ),
@@ -194,8 +196,8 @@ class Organizer_HomePage extends StatelessWidget {
                             Navigator.push(context, MaterialPageRoute(builder: (context)=>Display_Data_Offline()));
                           },
                           child: CustomGridItem("grid2", "Offline Event", Theme.of(context).primaryColor,Theme.of(context).brightness == Brightness.dark ? 'assets/createdondark.json' : 'assets/createdon.json',)),
-                      CustomGridItem("grid3", "Grid 3", Theme.of(context).primaryColor,'assets/displaydata.json'),
-                      CustomGridItem("grid4", "Grid 4", Theme.of(context).primaryColor,'assets/displaydata.json'),
+                      CustomGridItem("grid3", "Analytics", Theme.of(context).primaryColor,Theme.of(context).brightness == Brightness.dark ? 'assets/analytics_dark.json' : 'assets/analytics_light.json'),
+                      CustomGridItem("grid4", "Expense", Theme.of(context).primaryColor,'assets/displaydata.json'),
                     ],
                   ),
                 ),

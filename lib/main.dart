@@ -6,9 +6,10 @@ import 'Main Entrance/Main_Screen.dart';
 var userid;
 
 
-//var ip_address ='192.168.29.104'; //integos
+var ip_address ='192.168.29.104'; //integos
 //var ip_address ='192.168.18.52'; //home-ethernet
-var ip_address ='192.168.18.73'; //home-wifi
+//var ip_address = '192.168.18.73'; //home-wifi
+// var ip_address = '4eae-103-175-136-114.ngrok-free.app';
 
 void main() {
   runApp(const MyApp());

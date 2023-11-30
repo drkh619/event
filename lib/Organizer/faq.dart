@@ -87,6 +87,7 @@ class FAQItem extends StatelessWidget {
         Text(
           question,
           style: TextStyle(
+            color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
             fontSize: 18,
             fontWeight: FontWeight.bold,
             fontFamily: 'Arial',
@@ -96,6 +97,7 @@ class FAQItem extends StatelessWidget {
         Text(
           answer,
           style: TextStyle(
+            color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
             fontSize: 16,
             fontFamily: 'Arial',
           ),

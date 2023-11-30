@@ -20,6 +20,7 @@ class Create_online_event extends StatefulWidget {
 class _Create_online_eventState extends State<Create_online_event> with SingleTickerProviderStateMixin{
 
    //here
+  bool isPrivate = false;
   //lottie animation controller start
   late final AnimationController _controller;
   @override
@@ -72,6 +73,8 @@ class _Create_online_eventState extends State<Create_online_event> with SingleTi
   TextEditingController eventPrice = TextEditingController();
   TextEditingController eventCapacity = TextEditingController();
   TextEditingController eventDescription = TextEditingController();
+  TextEditingController visibility = TextEditingController(text: 'public');
+  TextEditingController token = TextEditingController(text: '1');
 
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
 
@@ -117,6 +120,7 @@ class _Create_online_eventState extends State<Create_online_event> with SingleTi
 
   Future uploadImage() async {
     final uri = Uri.parse("http://$ip_address/Event_Management/Organise/Create_online_event.php");
+    //final uri = Uri.parse("https://$ip_address/Event_Management/Organise/Create_online_event.php");
     var request = http.MultipartRequest('POST', uri);
     request.fields['event_name'] = eventName.text;
     request.fields['event_start_date'] = eventStartDate.text;
@@ -126,6 +130,8 @@ class _Create_online_eventState extends State<Create_online_event> with SingleTi
     request.fields['event_capacity'] = eventCapacity.text;
     request.fields['event_description'] = eventDescription.text;
     request.fields['uid'] = userid;
+    request.fields['visibility'] = visibility.text;
+    request.fields['token'] = token.text;
 
     print('Image Path: ${_image?.path}');
 
@@ -149,6 +155,25 @@ class _Create_online_eventState extends State<Create_online_event> with SingleTi
       setState(() {
         // _image = null;
       });
+      //
+      // bool isPublic = true; // Default to public
+      // String token = ""; // To store the token for private events
+
+// Function to handle the switch change
+//       void handleSwitchChange(bool value) {
+//         setState(() {
+//           isPrivate = value;
+//           // Set the visibility and token fields based on the switch state
+//           if (isPrivate) {
+//             visibility.text = 'private';
+//             token.text = '1'; // Default value when it's a private event
+//           } else {
+//             visibility.text = 'public';
+//             token.clear(); // Clear the token field for public events
+//           }
+//         });
+//       }
+
 
       // Usage in your code
       final snackBar = CustomSnackBar(
@@ -158,6 +183,9 @@ class _Create_online_eventState extends State<Create_online_event> with SingleTi
           onPressed: () {},
         ),
       );
+      print(isPrivate);
+      print(token);
+      print(visibility);
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else {
       print('Image Not Uploaded');
@@ -226,6 +254,7 @@ class _Create_online_eventState extends State<Create_online_event> with SingleTi
                   ),
                 ),
               ),
+
               SizedBox(
                 height: 10,
               ),
@@ -241,7 +270,7 @@ class _Create_online_eventState extends State<Create_online_event> with SingleTi
                     );
 
                     if (selectedDate != null) {
-                      final formattedDate = DateFormat('yyyy-MM-dd').format(selectedDate);
+                      final formattedDate = DateFormat('dd-MM-yyyy').format(selectedDate);
                       setState(() {
                         eventStartDate.text = formattedDate; // Update the event date field
                       });
@@ -282,7 +311,7 @@ class _Create_online_eventState extends State<Create_online_event> with SingleTi
                 child: GestureDetector(
                   onTap: () async {
                     DateTime? selectedStartDate = eventStartDate.text.isNotEmpty
-                        ? DateFormat('yyyy-MM-dd').parse(eventStartDate.text)
+                        ? DateFormat('dd-MM-yyyy').parse(eventStartDate.text)
                         : DateTime.now();
 
                     final selectedDate = await showDatePicker(
@@ -293,7 +322,7 @@ class _Create_online_eventState extends State<Create_online_event> with SingleTi
                     );
 
                     if (selectedDate != null) {
-                      final formattedDate = DateFormat('yyyy-MM-dd').format(selectedDate);
+                      final formattedDate = DateFormat('dd-MM-yyyy').format(selectedDate);
                       setState(() {
                         eventEndDate.text = formattedDate; // Update the event end date field
                       });
@@ -449,6 +478,43 @@ class _Create_online_eventState extends State<Create_online_event> with SingleTi
                   ),
                 ),
               ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                child: Row(
+                  children: [
+                    Text("Private Event"),
+                    Switch(
+                      value: isPrivate,
+                      onChanged: (value) {
+                        setState(() {
+                          isPrivate = value;
+                          // Set the visibility and token fields based on the switch state
+                          if (isPrivate) {
+                            visibility.text = 'private';
+                            token.clear(); // Default value when it's a private event
+                          } else{
+                            visibility.text = 'public';
+                            token.text = '1'; // Clear the token field for public events
+                          }
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
+
+              // Show the token input field if it's a private event
+              if (isPrivate)
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                  child: TextFormField(
+                    controller: token,
+                    decoration: InputDecoration(
+                      labelText: 'Token',
+                    ),
+                  ),
+                ),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

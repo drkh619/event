@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:event_management/Organizer/Organizer_Home_Page.dart';
 import 'package:event_management/Organizer/Organizer_Registration_Page.dart';
+import 'package:event_management/Organizer/testpage.dart';
 import 'package:event_management/main.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -168,6 +169,7 @@ class _Organizer_Login_PageState extends State<Organizer_Login_Page> {
 
   Future organiser_Login() async {
     var url = "http://$ip_address/Event_Management/Organise/organiser_login.php";
+    print(url);
     var response =  await http.post(Uri.parse(url), headers: {
       'Accept': 'application/json'
     }, body: {
@@ -203,7 +205,7 @@ class _Organizer_Login_PageState extends State<Organizer_Login_Page> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (BuildContext context) => Organizer_HomePage(),
+          builder: (BuildContext context) => OnboardingPage1(),
         ),
       );
     } else {

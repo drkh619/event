@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:event_management/main.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:event_management/main.dart';
@@ -10,6 +11,7 @@ import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Update_data_online.dart';
+import 'display_data_detail_online.dart';
 
 
 //Creating a class user to store the data;
@@ -87,12 +89,23 @@ class _Display_Data_OnlineState extends State<Display_Data_Online> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          title: Text(
+            "Online Events",
+            style: GoogleFonts.prompt(color: Colors.white),
+          ),
+          backgroundColor: Theme.of(context).primaryColor,
+          elevation: 0,
           centerTitle: true,
-          title: Text("Events"),
-          backgroundColor:
-          Theme.of(context).brightness == Brightness.dark
-              ? Colors.purple
-              : Colors.teal,
+          leading: GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Icon(
+              Icons.arrow_back_rounded,
+              color: Colors.white,
+              size: 35,
+            ),
+          ),
         ),
         body: Container(
           padding: EdgeInsets.all(16.0),
@@ -112,7 +125,7 @@ class _Display_Data_OnlineState extends State<Display_Data_Online> {
                         SizedBox(
                           height: 30,
                         ),
-                        Lottie.asset('assets/loading.json'),
+                        Lottie.asset(Theme.of(context).brightness == Brightness.dark ? 'assets/loadingdark.json' : 'assets/loading.json',),
                       ],
                     ),
                   ),
@@ -121,14 +134,31 @@ class _Display_Data_OnlineState extends State<Display_Data_Online> {
                 return ListView.builder(
                   itemCount: snapshot.data.length,
                   itemBuilder: (ctx, index) {
-                    DateTime eventDate = DateFormat('yyyy-MM-dd')
-                        .parse(snapshot.data[index].event_start_date);
-                    int daysDifference =
-                        DateTime.now().difference(eventDate).inDays;
+                    DateTime eventDate = DateFormat('dd-MM-yyyy').parse(snapshot.data[index].event_start_date);
+                    int daysDifference = DateTime.now().difference(eventDate).inDays;
 
-                    return Column(
-                      children: [
-                        Card(
+                    return Container(
+                      margin: EdgeInsets.only(bottom: 20),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            ctx,
+                            MaterialPageRoute(
+                              builder: (context) => DetailOnline(
+                                event_name: snapshot.data[index].event_name,
+                                event_start_date: snapshot.data[index].event_start_date,
+                                event_end_date: snapshot.data[index].event_end_date,
+                                event_image: snapshot.data[index].event_image,
+                                event_capacity: snapshot.data[index].event_capacity,
+                                event_price: snapshot.data[index].event_price,
+                                event_link: snapshot.data[index].event_link,
+                                event_description: snapshot.data[index].event_description,
+                                // Pass other item details as needed
+                              ),
+                            ),
+                          );
+                        },
+                        child: Card(
                           color: Theme.of(context).brightness == Brightness.dark
                               ? Colors.purple.shade100
                               : Colors.teal.shade100,
@@ -141,8 +171,7 @@ class _Display_Data_OnlineState extends State<Display_Data_Online> {
                                   textColor: Colors.black,
                                   leading: GestureDetector(
                                     onTap: () {
-                                      setState(() {});
-                                      Navigator.pushReplacement(
+                                      Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) => Edit_Data_with_image(
@@ -194,10 +223,8 @@ class _Display_Data_OnlineState extends State<Display_Data_Online> {
                             ],
                           ),
                         ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                      ],
+
+                      ),
                     );
                   },
                 );

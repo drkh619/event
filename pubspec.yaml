@@ -41,11 +41,15 @@ dependencies:
   lottie:
   google_fonts:
   shared_preferences:
-  fluttertoast:
   http:
   url_launcher:
   intl:
-  open_mail_app:
+  fluttertoast: ^8.2.4
+  open_mail_app: ^0.4.5
+  google_places_flutter:
+  flutter_typeahead:
+  flutter_markdown:
+  markdown_widget:
   #flutter_animated_buttons: ^3.0.0
 
 dev_dependencies:
