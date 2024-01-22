@@ -5,6 +5,7 @@ import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
+import '../main.dart';
 import 'User_Home_Page.dart';
 import 'User_Login_Page.dart';
 
@@ -32,7 +33,10 @@ class _User_Splash_ScreenState extends State<User_Splash_Screen> {
                     builder: (BuildContext context) => User_HomePage()));
       });
     });
-    setState(() {});
+    setState(() {
+      getusername();
+      getuserId();
+    });
 
     super.initState();
   }
@@ -64,4 +68,24 @@ class _User_Splash_ScreenState extends State<User_Splash_Screen> {
       User_key = obtainedemail;
     });
   }
+
+
+  getusername() async {
+    final SharedPreferences sharedprefs = await SharedPreferences.getInstance();
+    var obtainedemail = await sharedprefs.getString('username_user');
+    setState(() {
+      username_user = obtainedemail!;
+    });
+
+  }
+
+  getuserId() async {
+    final SharedPreferences sharedprefs = await SharedPreferences.getInstance();
+    var obtainedemail = await sharedprefs.getString('userId_user');
+    setState(() {
+      user_Id = obtainedemail!;
+    });
+
+  }
+
 }

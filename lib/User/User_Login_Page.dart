@@ -16,6 +16,24 @@ class User_Login_Page extends StatefulWidget {
 }
 
 class _User_Login_PageState extends State<User_Login_Page> {
+
+  getusername()async{
+
+    final shrdprfs = await SharedPreferences.getInstance();
+    await shrdprfs.setString("username_user", username_user);
+
+  }
+
+
+  getId()async{
+
+    final shrdprfs = await SharedPreferences.getInstance();
+    await shrdprfs.setString("userId_user", user_Id);
+
+  }
+
+
+
   TextEditingController username = TextEditingController();
   TextEditingController password = TextEditingController();
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
@@ -172,6 +190,13 @@ class _User_Login_PageState extends State<User_Login_Page> {
         await SharedPreferences.getInstance();
 
         await sharedpreferences.setString('user_id', singleUser["id"]);
+
+        username_user=singleUser["username"];
+        user_Id =singleUser["id"];
+
+        getusername();
+        getId();
+
       }
 
       final snackBar = SnackBar(

@@ -92,6 +92,9 @@ class _About_UsState extends State<About_Us> {
             width: MediaQuery.of(context).size.width / 1.1,
             height: MediaQuery.of(context).size.height / 1.2,
             child: Card(
+              color: Theme.of(context).brightness == Brightness.dark ?
+              Theme.of(context).cardTheme.color :
+              Colors.teal.shade50,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30.0),
               ),

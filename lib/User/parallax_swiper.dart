@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -84,9 +85,13 @@ class ParallaxSwiper extends StatefulWidget {
 class _ParallaxSwiperState extends State<ParallaxSwiper> {
   /// The controller for the [PageView].
   late final PageController controller;
-
   /// The raw index of the current page in the [PageView].
   double pageIndex = 0.0;
+  /// Flag to track if the user has interacted with scrolling.
+  bool userInteracted = false;
+
+  /// Timer for auto-scrolling.
+  late Timer autoScrollTimer;
 
   /// Listener method for updating the current page index when the page changes.
   ///
@@ -115,7 +120,48 @@ class _ParallaxSwiperState extends State<ParallaxSwiper> {
     // Add the index change listener to the controller after the frame is built.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       controller.addListener(_indexChangeListener);
+      autoScrollTimer = Timer(Duration(seconds: 2), startAutoScroll);
     });
+  }
+  /// Method to start auto-scrolling.
+  void startAutoScroll() {
+    if (!userInteracted) {
+      // Get the total number of pages
+      int totalPages = widget.images.length;
+
+      // Calculate the next page index
+      int nextPageIndex = (pageIndex + 1).round();
+
+      // Check if the next page index is the last page
+      if (nextPageIndex == totalPages) {
+        // If the next page is the last page, stop auto-scrolling
+        autoScrollTimer.cancel();
+      } else {
+        // Scroll to the next page if the user has not interacted and it's not the last page.
+        controller.animateToPage(
+          nextPageIndex,
+          duration: const Duration(seconds: 1),
+          curve: Curves.easeInOut,
+        );
+        // Restart the auto-scroll timer.
+        restartAutoScrollTimer();
+      }
+    }
+    else {
+      // If the user has interacted, use the extended auto-scroll delay
+      autoScrollTimer = Timer(Duration(seconds: 4), startAutoScroll);
+
+      // Reset the user interaction flag for the next round of auto-scrolling
+      setState(() {
+        userInteracted = false;
+      });
+    }
+  }
+
+  /// Method to restart the auto-scroll timer.
+  void restartAutoScrollTimer() {
+    autoScrollTimer.cancel();
+    autoScrollTimer = Timer(Duration(seconds: 2), startAutoScroll);
   }
 
   /// Dispose method to release resources when the widget is removed from the tree.
@@ -149,6 +195,7 @@ class _ParallaxSwiperState extends State<ParallaxSwiper> {
 
           return GestureDetector(
               onTap: () {
+
             // Navigate to the location details page with the corresponding data
             Navigator.push(
               context,

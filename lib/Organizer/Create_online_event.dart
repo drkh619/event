@@ -75,6 +75,7 @@ class _Create_online_eventState extends State<Create_online_event> with SingleTi
   TextEditingController eventDescription = TextEditingController();
   TextEditingController visibility = TextEditingController(text: 'public');
   TextEditingController token = TextEditingController(text: '1');
+  // TextEditingController status = TextEditingController(text: '0');
 
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
 
@@ -119,8 +120,8 @@ class _Create_online_eventState extends State<Create_online_event> with SingleTi
 
 
   Future uploadImage() async {
-    final uri = Uri.parse("http://$ip_address/Event_Management/Organise/Create_online_event.php");
-    //final uri = Uri.parse("https://$ip_address/Event_Management/Organise/Create_online_event.php");
+    //final uri = Uri.parse("http://$ip_address/Event_Management/Organise/Create_online_event.php");
+    final uri = Uri.parse("https://$ip_address/Event_Management/Organise/Create_online_event.php");
     var request = http.MultipartRequest('POST', uri);
     request.fields['event_name'] = eventName.text;
     request.fields['event_start_date'] = eventStartDate.text;
@@ -132,6 +133,8 @@ class _Create_online_eventState extends State<Create_online_event> with SingleTi
     request.fields['uid'] = userid;
     request.fields['visibility'] = visibility.text;
     request.fields['token'] = token.text;
+    request.fields['organiser_name'] = username_org;
+    // request.fields['status'] = '0';
 
     print('Image Path: ${_image?.path}');
 
@@ -508,6 +511,9 @@ class _Create_online_eventState extends State<Create_online_event> with SingleTi
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
                   child: TextFormField(
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(4),
+                    ],
                     controller: token,
                     decoration: InputDecoration(
                       labelText: 'Token',

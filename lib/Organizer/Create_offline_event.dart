@@ -134,6 +134,7 @@ class _Create_offline_eventState extends State<Create_offline_event> with Single
     request.fields['visibility'] = visibility.text;
     request.fields['token'] = token.text;
     request.fields['uid'] = userid;
+    request.fields['organiser_name'] = username_org;
 
     var pic = await http.MultipartFile.fromPath("event_image", _image.path);
     request.files.add(pic);
@@ -582,6 +583,9 @@ class _Create_offline_eventState extends State<Create_offline_event> with Single
                   padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
                   child: TextFormField(
                     controller: token,
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(4),
+                    ],
                     decoration: InputDecoration(
                       labelText: 'Token',
                     ),

@@ -69,6 +69,9 @@ class _DetailOfflineState extends State<DetailOffline> {
               width: MediaQuery.of(context).size.width / 1.1,
               height: MediaQuery.of(context).size.height / 1.2,
               child: Card(
+                color: Theme.of(context).brightness == Brightness.dark ?
+                Theme.of(context).cardTheme.color :
+                Colors.teal.shade50,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0),
                 ),
@@ -207,13 +210,16 @@ class _DetailOfflineState extends State<DetailOffline> {
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            '₹' + NumberFormat('#,##,000').format(int.parse(widget.event_price)),
+                            widget.event_price == '0'
+                                ? 'Free'
+                                : '₹' + NumberFormat('#,##,##0').format(int.parse(widget.event_price)),
                             style: GoogleFonts.alexandria(
                               color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
                               fontSize: 30.0,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
+
                         ),
                       ),
                       SizedBox(height: 20,),

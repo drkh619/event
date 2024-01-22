@@ -26,6 +26,13 @@ class _Organizer_Login_PageState extends State<Organizer_Login_Page> {
 
   }
 
+  getusername()async{
+
+    final shrdprfs = await SharedPreferences.getInstance();
+    await shrdprfs.setString("username_org", username_org);
+
+  }
+
 
 
   TextEditingController username = TextEditingController();
@@ -188,6 +195,9 @@ class _Organizer_Login_PageState extends State<Organizer_Login_Page> {
 
 
         userid=singleUser["id"];
+        username_org=singleUser["username"];
+
+        getusername();
         getID();
 
       }

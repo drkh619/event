@@ -1,5 +1,6 @@
 import 'package:event_management/Organizer/Display_Data_Offline.dart';
 import 'package:event_management/Organizer/Display_Data_Online.dart';
+import 'package:event_management/Organizer/analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
@@ -79,7 +80,7 @@ class Organizer_HomePage extends StatelessWidget {
                                   SizedBox(height: 20),
                                   ElevatedButton(
                                     onPressed: () {
-                                      Navigator.push(
+                                      Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
@@ -102,7 +103,7 @@ class Organizer_HomePage extends StatelessWidget {
                                   SizedBox(height: 20),
                                   ElevatedButton(
                                     onPressed: () {
-                                      Navigator.push(
+                                      Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
@@ -166,6 +167,7 @@ class Organizer_HomePage extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 10),
+              Divider(),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Text(
@@ -196,7 +198,11 @@ class Organizer_HomePage extends StatelessWidget {
                             Navigator.push(context, MaterialPageRoute(builder: (context)=>Display_Data_Offline()));
                           },
                           child: CustomGridItem("grid2", "Offline Event", Theme.of(context).primaryColor,Theme.of(context).brightness == Brightness.dark ? 'assets/createdondark.json' : 'assets/createdon.json',)),
-                      CustomGridItem("grid3", "Analytics", Theme.of(context).primaryColor,Theme.of(context).brightness == Brightness.dark ? 'assets/analytics_dark.json' : 'assets/analytics_light.json'),
+                      GestureDetector(
+                          onTap: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>AnalyticsPage()));
+                          },
+                          child: CustomGridItem("grid3", "Analytics", Theme.of(context).primaryColor,Theme.of(context).brightness == Brightness.dark ? 'assets/analytics_dark.json' : 'assets/analytics_light.json')),
                       CustomGridItem("grid4", "Expense", Theme.of(context).primaryColor,'assets/displaydata.json'),
                     ],
                   ),

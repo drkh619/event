@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:password_strength/password_strength.dart';
 
 import 'User_Login_Page.dart';
 
@@ -33,6 +34,39 @@ class _User_Registration_PageState extends State<User_Registration_Page> {
   late bool status;
 
   late String message;
+
+  double calculatePasswordStrength(String password) {
+    double strength = estimatePasswordStrength(password);
+    return strength;
+  }
+
+  Widget buildPasswordStrengthIndicator(String password) {
+    double strength = calculatePasswordStrength(password);
+
+    Color strengthColor;
+    String strengthText;
+
+    if (strength > 0.7) {
+      strengthColor = Colors.green;
+      strengthText = 'Strong';
+    } else if (strength > 0.4) {
+      strengthColor = Colors.orange;
+      strengthText = 'Moderate';
+    } else {
+      strengthColor = Colors.red;
+      strengthText = 'Weak';
+    }
+
+    return Row(
+      children: [
+        Text(
+          strengthText,
+          style: TextStyle(color: strengthColor,fontSize: 10.0,
+            fontWeight: FontWeight.w300,),
+        ),
+      ],
+    );
+  }
 
   @override
   void initState() {
@@ -227,6 +261,11 @@ class _User_Registration_PageState extends State<User_Registration_Page> {
                     style: TextStyle(color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black),
                   ),
                 ),
+                SizedBox(height: 5),
+                Padding(
+                  padding: const EdgeInsets.only(left:282.0),
+                  child: buildPasswordStrengthIndicator(_password.text),
+                ),
                 SizedBox(height: 20),
                 Padding(
                     padding: EdgeInsets.symmetric(
@@ -280,17 +319,17 @@ class _User_Registration_PageState extends State<User_Registration_Page> {
                           gravity: ToastGravity.BOTTOM,
                           timeInSecForIosWeb: 1,
                           backgroundColor: Colors.blueGrey);
-                      // if (formkey.currentState!.validate()) {
-                      //   setState(() {
-                      //
-                      //     Registration();
-                      //   });
-                      //   _username.clear();
-                      //   _email.clear();
-                      //   _phone.clear();
-                      //   _password.clear();
-                      //   _confirmpassword.clear();
-                      // }
+                      if (formkey.currentState!.validate()) {
+                        setState(() {
+
+                          Registration();
+                        });
+                        _username.clear();
+                        _email.clear();
+                        _phone.clear();
+                        _password.clear();
+                        _confirmpassword.clear();
+                      }
                     },
                     child: Text(
                       'Sign Up',
@@ -303,8 +342,8 @@ class _User_Registration_PageState extends State<User_Registration_Page> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text("Already have an account? ",
-                    style: TextStyle(color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black
-                    ),),
+                      style: TextStyle(color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black
+                      ),),
                     TextButton(
                       onPressed: () {
                         Navigator.pushReplacement(
@@ -384,4 +423,3 @@ class _User_Registration_PageState extends State<User_Registration_Page> {
     print("DATA: ${data}");
   }
 }
-

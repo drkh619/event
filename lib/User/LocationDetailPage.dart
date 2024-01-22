@@ -1,6 +1,8 @@
+import 'package:event_management/User/buynow.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'dart:convert';
 
 import '../Organizer/display_data_detail_offline.dart';
@@ -49,6 +51,7 @@ class LocationDetailsPage extends StatelessWidget {
                 return ListView.builder(
                   itemCount: locationData.length,
                   itemBuilder: (ctx, index) {
+                    String id = locationData[index]['id'];
                     String eventName = locationData[index]['event_name'];
                     String eventStartDate = locationData[index]['event_start_date'];
                     String eventEndDate = locationData[index]['event_end_date'];
@@ -58,6 +61,7 @@ class LocationDetailsPage extends StatelessWidget {
                     String eventDescription = locationData[index]['event_description'];
                     String eventImage = locationData[index]['event_image'];
                     String place = locationData[index]['place'];
+                    String status = locationData[index]['status'];
 
                     return Column(
                       children: [
@@ -66,7 +70,7 @@ class LocationDetailsPage extends StatelessWidget {
                               Navigator.push(
                                 ctx,
                                 MaterialPageRoute(
-                                  builder: (context) => DetailOffline(
+                                  builder: (context) => BuyNow(
                                     event_name: eventName,
                                     event_start_date: eventStartDate,
                                     event_end_date: eventEndDate,
@@ -76,6 +80,9 @@ class LocationDetailsPage extends StatelessWidget {
                                     event_venue: eventVenue,
                                     event_description: eventDescription,
                                     place: place,
+                                    id: id,
+                                    status: status,
+                                    event_link: '',
                                     // Pass other item details as needed
                                   ),
                                 ),
@@ -118,7 +125,6 @@ class LocationDetailsPage extends StatelessWidget {
                                   leading: Icon(Icons.location_on, color: Colors.black54,),
                                   title: Text('$eventVenue', style: TextStyle(color: Colors.black54),),
                                   textColor: Colors.black,
-                                  subtitle: Text('$eventStartDate to $eventEndDate'),
                                 ),
                               ),
 
@@ -133,7 +139,7 @@ class LocationDetailsPage extends StatelessWidget {
                               Padding(
                                 padding: const EdgeInsets.all(0.0),
                                 child: ListTile(
-                                  title: Text(eventPrice == '0' ? 'Free' : '₹$eventPrice',
+                                  title: Text(eventPrice == '0' ? 'Free' : formatPrice('$eventPrice'),
                                     style: GoogleFonts.alexandria(
                                     color: Colors.black,
                                     fontSize: 22.0,
@@ -159,5 +165,17 @@ class LocationDetailsPage extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+String formatPrice(String? price) {
+  if (price != null && price.isNotEmpty) {
+    final priceValue = int.parse(price);
+    final numberFormat = NumberFormat.currency(locale: 'en_IN', symbol: '₹');
+    final formattedPrice = numberFormat.format(priceValue);
+
+    // Remove .00 if present
+    return formattedPrice.endsWith('.00') ? formattedPrice.substring(0, formattedPrice.length - 3) : formattedPrice;
+  } else {
+    return 'Free';
   }
 }

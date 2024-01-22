@@ -5,11 +5,20 @@ import 'Main Entrance/Main_Screen.dart';
 
 var userid;
 
+var user_Id;
 
-var ip_address ='192.168.29.104'; //integos
+var username_user;
+
+var username_org;
+
+var event_type;
+
+
+//var ip_address ='192.168.29.104'; //integos
 //var ip_address ='192.168.18.52'; //home-ethernet
 //var ip_address = '192.168.18.73'; //home-wifi
-// var ip_address = '4eae-103-175-136-114.ngrok-free.app';
+var ip_address = 'parietal-insanities.000webhostapp.com';
+//var ip_address = 'ae68-103-175-89-0.ngrok-free.app';
 
 void main() {
   runApp(const MyApp());
@@ -22,6 +31,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData.light().copyWith(
         primaryColor: Colors.teal, // Define your primary color
         textTheme: TextTheme(

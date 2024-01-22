@@ -40,6 +40,7 @@ class _Organizer_Splash_ScreenState extends State<Organizer_Splash_Screen> {
     setState(() {
 
       Getid();
+      getusername();
     });
 
     super.initState();
@@ -80,6 +81,15 @@ class _Organizer_Splash_ScreenState extends State<Organizer_Splash_Screen> {
     var obtain_uid = await sharedprefs.getString('organizer_uid');
     setState(() {
       userid = obtain_uid;
+    });
+
+  }
+
+  getusername() async {
+    final SharedPreferences sharedprefs = await SharedPreferences.getInstance();
+    var obtainedemail = await sharedprefs.getString('username_org');
+    setState(() {
+      username_org = obtainedemail!;
     });
 
   }
