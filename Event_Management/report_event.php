@@ -15,13 +15,12 @@ if ($connection->connect_error) {
             
             
 				$id = $_POST['id'];
-				$event_name = $_POST["event_name"];
-				$event_end_date= $_POST["event_end_date"];
-				$event_capacity = $_POST["event_capacity"];
-				$event_description = $_POST["event_description"];
+				$status = $_POST["status"];
+				//$age= $_POST["age"];
+
+	$connection->query("UPDATE offline_event SET status=status+1 WHERE id=".$id);
 
 
-	$connection->query("UPDATE offline_event SET event_name='".$event_name."',event_end_date='".$event_end_date."',event_capacity='".$event_capacity."',event_description='".$event_description."' WHERE id=".$id);
 
 
 	

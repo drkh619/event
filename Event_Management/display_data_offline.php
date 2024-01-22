@@ -1,8 +1,8 @@
-<?php 
+<?php
 $servername = 'localhost';
-$username = 'root';
-$password = '';
-$database = "evnt_mgmt";
+$username = 'id21608226_root';
+$password = 'Oroyuoiw34!';
+$database = 'id21608226_event_mgmt';
 
 // // Create connection
 $connection = new mysqli($servername, $username, $password,$database);
@@ -15,7 +15,7 @@ if ($connection->connect_error) {
   
   
   $uid=$_GET['uid'];
-  $sql = "SELECT * FROM `offline_event` WHERE uid=".$uid;
+  $sql = "SELECT * FROM `offline_event` WHERE uid = $uid ORDER BY event_start_date DESC";
 
   
     

@@ -1,13 +1,14 @@
 <?php
 $servername = 'localhost';
-$username = 'root';
-$password = '';
-$database = "evnt_mgmt";
+$username = 'id21608226_root';
+$password = 'Oroyuoiw34!';
+$database = 'id21608226_event_mgmt';
 
-$ip_address = "192.168.29.104"; //integos
+$ip_address = "parietal-insanities.000webhostapp.com"; // host
+//$ip_address = "192.168.29.104"; //integos
 //$ip_address = "192.168.18.52"; //home-ethernet
 //$ip_address = "192.168.18.73"; //home-wifi
-
+//$ip_address = '4eae-103-175-136-114.ngrok-free.app';
 
 // // Create connection
 $connection = new mysqli($servername, $username, $password,$database);
@@ -31,6 +32,9 @@ if ($connection->connect_error) {
      $event_description = $_POST['event_description'];
 	 $uid = $_POST['uid'];
 	   //$price = $_POST['price'];
+	   $visibility = $_POST['visibility']; // Added visibility
+$token = $_POST['token'];
+$status = '0';// Added token
 	   
 	    
 
@@ -39,7 +43,7 @@ if ($connection->connect_error) {
   move_uploaded_file($file_tmp,'image_uploaded/'.$file_name1);
  
 
-  $file_name2="http://".$ip_address."/Event_Management/Organise/image_uploaded/".$file_name1; //integos
+  $file_name2="https://".$ip_address."/Event_Management/Organise/image_uploaded/".$file_name1; //integos
   //$file_name2="http://192.168.18.63/Event_Management/Organise/image_uploaded/".$file_name1;  //home-wifi
 
   
@@ -49,8 +53,8 @@ if ($connection->connect_error) {
 
 //echo $_FILES['event_image'];
 
- $sql = "INSERT INTO `online_event`( `event_name`,`event_start_date`,`event_end_date`,`event_link`,`event_price`,`event_capacity`,`event_image`,`event_description`,`uid`) VALUES 
- ( ' $event_name ','$event_start_date','$event_end_date','$event_link','$event_price','$event_capacity','$file_name2','$event_description','$uid')";
+ $sql = "INSERT INTO `online_event`( `event_name`,`event_start_date`,`event_end_date`,`event_link`,`event_price`,`event_capacity`,`event_image`,`event_description`,`uid`, `visibility`, `token`, `status`) VALUES 
+ ( ' $event_name ','$event_start_date','$event_end_date','$event_link','$event_price','$event_capacity','$file_name2','$event_description','$uid', '$visibility', '$token', '$status')";
 
  if ($connection->query($sql) === TRUE)
 {

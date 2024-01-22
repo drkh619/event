@@ -1,8 +1,8 @@
-<?php 
+<?php
 $servername = 'localhost';
-$username = 'root';
-$password = '';
- $database = "evnt_mgmt";
+$username = 'id21608226_root';
+$password = 'Oroyuoiw34!';
+$database = 'id21608226_event_mgmt';
 
 $connection = new mysqli($servername, $username, $password,$database);
     
