@@ -544,8 +544,8 @@ class _Create_offline_eventState extends State<Create_offline_event> with Single
                         color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
                       ),
                     ),
-                    labelText: "Enter event description",
-                    hintText: "Enter event description",
+                    labelText: "Description (Markdown enabled)",
+                    hintText: "Description (Markdown enabled)",
                     hintStyle: TextStyle(color: Colors.grey),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),

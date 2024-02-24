@@ -473,8 +473,8 @@ class _Create_online_eventState extends State<Create_online_event> with SingleTi
                         color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
                       ),
                     ),
-                    labelText: "Enter event description",
-                    hintText: "Enter event description",
+                    labelText: "Description (Markdown enabled)",
+                    hintText: "Description (Markdown enabled)",
                     hintStyle: TextStyle(color: Colors.grey),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
