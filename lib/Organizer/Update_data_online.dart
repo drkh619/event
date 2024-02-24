@@ -68,7 +68,7 @@ class _Edit_Data_with_imageState extends State<Edit_Data_with_image> {
 
   Future updateImage() async {
     final uri = Uri.parse(
-        "http://$ip_address/Event_Management/Organise/update_data_online.php");
+        "$ip_address/Event_Management/Organise/update_data_online.php");
     var request = http.MultipartRequest('POST', uri);
     request.fields['id'] = widget.data_user.id.toString();
     request.fields['event_name'] = eventName.text;

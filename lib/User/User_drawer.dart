@@ -1,4 +1,6 @@
 import 'package:event_management/User/User_Login_Page.dart';
+import 'package:event_management/User/changePassword.dart';
+import 'package:event_management/User/user_feedback.dart';
 import 'package:event_management/User/yourOrders.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -91,6 +93,24 @@ class User_Drawer extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
+                      builder: (context) => ChangePasswordPage()));
+            },
+            leading: Icon(
+              Icons.password,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.blueGrey.shade100
+                  : Colors.blueGrey.shade900,
+            ),
+            title: Text("Change Password",
+                style: GoogleFonts.prompt(
+                  fontSize: 15,
+                )),
+          ),
+          ListTile(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
                       builder: (context) => FAQPage())); // Navigate to FAQ page
             },
             leading: Icon(
@@ -106,6 +126,24 @@ class User_Drawer extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => FeedbackPage())); // Navigate to FAQ page
+            },
+            leading: Icon(
+              Icons.feedback, // Use the help icon for FAQ
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.blueGrey.shade100
+                  : Colors.blueGrey.shade900,
+            ),
+            title: Text("Feedback", // Add a link to FAQ
+                style: GoogleFonts.prompt(
+                  fontSize: 15,
+                )),
+          ),
+          ListTile(
+            onTap: () {
               Organiser_Signout(context);
             },
             leading: Icon(
@@ -114,7 +152,7 @@ class User_Drawer extends StatelessWidget {
                   ? Colors.blueGrey.shade100
                   : Colors.blueGrey.shade900,
             ),
-            title: Text("Logout",
+            title: Text("Log out",
                 style: GoogleFonts.prompt(
                   fontSize: 15,
                 )),
@@ -135,4 +173,5 @@ class User_Drawer extends StatelessWidget {
     );
     print("logged out");
   }
+
 }

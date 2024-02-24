@@ -16,14 +16,14 @@ class OnboardingPage1 extends StatelessWidget {
         ),
         OnboardingPageModel(
           title: 'Create your custom event.',
-          description: 'Host your Virtual Events, Conferences, Workshops and Trainings, Sports and Fitness Events, Entertainment Events, Treks and Trips..',
+          description: 'Host your Virtual Events, Conferences, Workshops and Trainings, Sports, Entertainment Events, Treks and Trips..',
           imageUrl: 'https://i.ibb.co/LvmZypG/storefront-illustration-2.png',
           bgColor: const Color(0xff1eb090),
         ),
         OnboardingPageModel(
           title: 'Time to Sell those Tickets!',
           description:
-          'Make your event live and Share your event link to start selling your tickets. Accept payments online via debit card, credit card and internet banking.',
+          'Make your event live and Share your event link to start selling your tickets.',
           imageUrl: 'https://i.ibb.co/420D7VP/building.png',
           bgColor: const Color(0xfffeae4f),
         ),
@@ -157,6 +157,7 @@ class _OnboardingPageState extends State<OnboardingPagePresenter> {
                                 fontSize: 16, fontWeight: FontWeight.bold)),
                         onPressed: () {
                           widget.onSkip?.call();
+                          Navigator.pop(context);
                           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Organizer_HomePage()));
                         },
                         child: const Text("Skip")),
@@ -169,6 +170,7 @@ class _OnboardingPageState extends State<OnboardingPagePresenter> {
                       onPressed: () {
                         if (_currentPage == widget.pages.length - 1) {
                           widget.onFinish?.call();
+                          Navigator.pop(context);
                           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Organizer_HomePage()));
                         } else {
                           _pageController.animateToPage(_currentPage + 1,

@@ -53,7 +53,7 @@ class _Display_Data_OfflineState extends State<Display_Data_Offline> {
     final SharedPreferences sharedprefs = await SharedPreferences.getInstance();
     var ui = await sharedprefs.getString('organizer_uid');
     //replace your restFull API here.
-    String url = "http://$ip_address/Event_Management/display_data_offline.php?uid="+ui!;
+    String url = "$ip_address/Event_Management/display_data_offline.php?uid="+ui!;
 
     final response = await http.get(Uri.parse(url));
 
@@ -128,7 +128,27 @@ class _Display_Data_OfflineState extends State<Display_Data_Offline> {
                     ),
                   ),
                 );
-              } else {
+              }
+              else if (snapshot.data.isEmpty) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Lottie.asset(
+                        Theme.of(context).brightness == Brightness.dark
+                            ? 'assets/animatedark.json'
+                            : 'assets/animate2.json',
+                      ),
+                      SizedBox(height: 30),
+                      Text(
+                        'Create Some Events to get started..',
+                        style: GoogleFonts.poppins(fontSize: 16),
+                      ),
+                    ],
+                  ),
+                );
+              }
+              else {
                 return ListView.builder(
                   itemCount: snapshot.data.length,
                   itemBuilder: (ctx, index) {
@@ -136,6 +156,13 @@ class _Display_Data_OfflineState extends State<Display_Data_Offline> {
                         .parse(snapshot.data[index].event_start_date);
                     int daysDifference =
                         DateTime.now().difference(eventDate).inDays;
+                    bool isEventEndDateAfterToday(String eventEndDate) {
+                      final DateFormat formatter = DateFormat('dd-MM-yyyy');
+                      final DateTime now = DateTime.now();
+                      final DateTime formattedEventEndDate = formatter.parse(eventEndDate);
+                      return formattedEventEndDate.isAfter(now);
+                    }
+
 
                     return Column(
                       children: [
@@ -190,7 +217,7 @@ class _Display_Data_OfflineState extends State<Display_Data_Offline> {
                                       ),
                                     ),
                                     subtitle: Text(snapshot.data[index].event_start_date),
-                                    trailing: daysDifference >= -2
+                                    trailing: (daysDifference >= -2)
                                         ? IgnorePointer(
                                       child: Icon(
                                         Icons.delete,
@@ -204,14 +231,6 @@ class _Display_Data_OfflineState extends State<Display_Data_Offline> {
                                         setState(() {
                                           delrecord(snapshot.data[index].id);
                                         });
-
-                                        Fluttertoast.showToast(
-                                          msg: 'Data Deleted',
-                                          toastLength: Toast.LENGTH_LONG,
-                                          gravity: ToastGravity.BOTTOM,
-                                          timeInSecForIosWeb: 1,
-                                          backgroundColor: Colors.blueGrey,
-                                        );
                                       },
                                       child: Icon(
                                         Icons.delete,
@@ -240,23 +259,57 @@ class _Display_Data_OfflineState extends State<Display_Data_Offline> {
   }
 
   Future<void> delrecord(String id) async {
-    String url =
-        "http://$ip_address/Event_Management/Organise/delete_data_offline.php";
-    var res = await http.post(Uri.parse(url), body: {
-      "id": id,
-    });
-    var resoponse = jsonDecode(res.body);
-    if (resoponse["success"] == "true") {
-      setState(() {
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>  Display_Data_Offline()));
+    // Show confirmation dialog
+    bool confirmDelete = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Confirm Delete"),
+          content: Text("Are you sure you want to delete this Event?"),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false); // Cancel delete
+              },
+              child: Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true); // Confirm delete
+              },
+              child: Text("Delete"),
+            ),
+          ],
+        );
+      },
+    );
 
+    // If user confirms delete, proceed with deletion
+    if (confirmDelete == true) {
+      String url = "$ip_address/Event_Management/Organise/delete_data_offline.php";
+      var res = await http.post(Uri.parse(url), body: {
+        "id": id,
       });
-print("success");
+      var response = jsonDecode(res.body);
+      if (response["success"] == "true") {
+        setState(() {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) =>  Display_Data_Offline()),
+          );
+        });
+        print("success");
+        Fluttertoast.showToast(
+          msg: 'Data Deleted',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.blueGrey,
+        );
+      }
     }
   }
+
 }
 
 

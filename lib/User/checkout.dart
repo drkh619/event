@@ -52,7 +52,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
     try {
       // Make a POST request to the organizer API endpoint
       final orgResponse = await http.post(
-        Uri.parse('https://parietal-insanities.000webhostapp.com/Event_Management/User/org.php'),
+        Uri.parse('$ip_address/Event_Management/User/org.php'),
         body: {
           'event_type': event_type,
           'event_name': widget.event_name,
@@ -642,7 +642,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
   //   try {
   //     // Make a POST request to the server
   //     final response = await http.post(
-  //       Uri.parse('https://parietal-insanities.000webhostapp.com/Event_Management/User/payment.php'),
+  //       Uri.parse('$ip_address/Event_Management/User/payment.php'),
   //       body: paymentData,
   //     );
   //
@@ -666,7 +666,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
     try {
       // Make a POST request to the server
       final response = await http.post(
-        Uri.parse('https://parietal-insanities.000webhostapp.com/Event_Management/User/payment.php'),
+        Uri.parse('$ip_address/Event_Management/User/payment.php'),
         body: paymentData,
       );
 
@@ -709,7 +709,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
     try {
       // Make a POST request to the organizer API endpoint
       final orgResponse = await http.post(
-        Uri.parse('https://parietal-insanities.000webhostapp.com/Event_Management/User/org.php'),
+        Uri.parse('$ip_address/Event_Management/User/org.php'),
         body: {'orgId': orgId},
       );
 

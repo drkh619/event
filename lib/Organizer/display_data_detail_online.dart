@@ -136,7 +136,7 @@ class _DetailOnlineState extends State<DetailOnline> {
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            '₹' + NumberFormat('#,##,000').format(int.parse(widget.event_price)),
+                            '₹' + NumberFormat('#,##,##0').format(int.parse(widget.event_price)),
                             style: GoogleFonts.alexandria(
                               color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
                               fontSize: 30.0,

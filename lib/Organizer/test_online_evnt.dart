@@ -65,7 +65,7 @@ class _test_online_eventState extends State<test_online_event> {
 
   Future uploadImage() async {
     final uri = Uri.parse(
-        "http://$ip_address/event_mngmnt2/Create_online_event.php");
+        "$ip_address/event_mngmnt2/Create_online_event.php");
     var request = http.MultipartRequest('POST', uri);
 
     request.fields['event_name'] = eventname.text;

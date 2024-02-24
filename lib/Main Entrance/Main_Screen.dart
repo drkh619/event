@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:event_management/Organizer/Organizer_Splash_Screen.dart';
 import 'package:event_management/User/User_Splash_Screen.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../Admin/Splash_Screen.dart';
 
 void main() {
@@ -76,7 +77,7 @@ class _MainScreenState extends State<MainScreen> {
                     padding: EdgeInsets.all(20),
                     child: Text(
                       "EVENT.IO",
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                         fontSize: 48,
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -86,7 +87,7 @@ class _MainScreenState extends State<MainScreen> {
                   SizedBox(height: 8),
                   Text(
                     "Your Event Management Partner",
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                       fontSize: 16,
                       color: Colors.white,
                     ),

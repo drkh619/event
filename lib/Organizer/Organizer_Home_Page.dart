@@ -1,3 +1,4 @@
+import 'package:event_management/Organizer/Calendar.dart';
 import 'package:event_management/Organizer/Display_Data_Offline.dart';
 import 'package:event_management/Organizer/Display_Data_Online.dart';
 import 'package:event_management/Organizer/analytics.dart';
@@ -28,15 +29,39 @@ class Organizer_HomePage extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () async {
-              final SharedPreferences sharedpreferences =
-              await SharedPreferences.getInstance();
-              sharedpreferences.remove('organizer_id');
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Organizer_Login_Page(),
-                ),
+              bool logoutConfirmed = await showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text("Confirm Logout"),
+                    content: Text("Are you sure you want to log out?"),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop(false);
+                        },
+                        child: Text("Cancel"),
+                      ),
+                      TextButton(
+                        onPressed: () async {
+                          final SharedPreferences sharedpreferences =
+                          await SharedPreferences.getInstance();
+                          sharedpreferences.remove('organizer_id');
+                          Navigator.of(context).pop();
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Organizer_Login_Page(),
+                            ),
+                          );
+                        },
+                        child: Text("Logout"),
+                      ),
+                    ],
+                  );
+                },
               );
+              // You can handle the logoutConfirmed value if needed
             },
             icon: Icon(Icons.exit_to_app,color: Colors.white
             ),
@@ -123,6 +148,28 @@ class Organizer_HomePage extends StatelessWidget {
                                       minimumSize: Size(150, 50),
                                     ),
                                   ),
+                                  // ElevatedButton(
+                                  //   onPressed: () {
+                                  //     Navigator.pushReplacement(
+                                  //       context,
+                                  //       MaterialPageRoute(
+                                  //         builder: (context) =>
+                                  //             mySms(),
+                                  //       ),
+                                  //     );
+                                  //   },
+                                  //   child: Text(
+                                  //     'Offline Event',
+                                  //     style: TextStyle(
+                                  //       color: Colors.white,
+                                  //       fontSize: 18,
+                                  //     ),
+                                  //   ),
+                                  //   style: ElevatedButton.styleFrom(
+                                  //     primary: Theme.of(context).primaryColor,
+                                  //     minimumSize: Size(150, 50),
+                                  //   ),
+                                  // ),
                                 ],
                               ),
                             ),
@@ -203,7 +250,11 @@ class Organizer_HomePage extends StatelessWidget {
                             Navigator.push(context, MaterialPageRoute(builder: (context)=>AnalyticsPage()));
                           },
                           child: CustomGridItem("grid3", "Analytics", Theme.of(context).primaryColor,Theme.of(context).brightness == Brightness.dark ? 'assets/analytics_dark.json' : 'assets/analytics_light.json')),
-                      CustomGridItem("grid4", "Expense", Theme.of(context).primaryColor,'assets/displaydata.json'),
+                      GestureDetector(
+                          onTap: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>CalendarPage()));
+                          },
+                          child: CustomGridItem("grid4", "Calendar", Theme.of(context).primaryColor,Theme.of(context).brightness == Brightness.dark ? 'assets/calendar.json' : 'assets/calendar.json')),
                     ],
                   ),
                 ),
@@ -227,9 +278,9 @@ class Organizer_HomePage extends StatelessWidget {
           children: [
             Lottie.asset(
               animationAsset,
-              height: 100,
-              width: 100,
-              fit: BoxFit.cover,
+              height: 110,
+              width: 120,
+              fit: BoxFit.contain,
               // alignment: Alignment.center,
             ),
             SizedBox(height: 10),

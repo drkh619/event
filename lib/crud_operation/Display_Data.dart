@@ -33,7 +33,7 @@ class _Display_DataState extends State<Display_Data> {
 
   Future<List<User_model>> getRequest() async {
     //replace your restFull API here.
-    String url = "http://$ip_address/internship_crud/display_data.php";
+    String url = "$ip_address/internship_crud/display_data.php";
 
     final response = await http.get(Uri.parse(url));
 
@@ -170,7 +170,7 @@ class _Display_DataState extends State<Display_Data> {
 
   Future<void> delrecord(String id) async {
     String url =
-        "http://$ip_address/internship_crud/delete_data.php";
+        "$ip_address/internship_crud/delete_data.php";
     var res = await http.post(Uri.parse(url), body: {
       "id": id,
     });

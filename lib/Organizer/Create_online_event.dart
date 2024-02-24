@@ -52,7 +52,7 @@ class _Create_online_eventState extends State<Create_online_event> with SingleTi
     await Future.delayed(Duration(seconds: 7));
 
     // Navigate back to the Organizer_Home_Page
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) =>
@@ -120,8 +120,8 @@ class _Create_online_eventState extends State<Create_online_event> with SingleTi
 
 
   Future uploadImage() async {
-    //final uri = Uri.parse("http://$ip_address/Event_Management/Organise/Create_online_event.php");
-    final uri = Uri.parse("https://$ip_address/Event_Management/Organise/Create_online_event.php");
+    final uri = Uri.parse("$ip_address/Event_Management/Organise/Create_online_event.php");
+    // final uri = Uri.parse("$ip_address/Event_Management/Organise/Create_online_event.php");
     var request = http.MultipartRequest('POST', uri);
     request.fields['event_name'] = eventName.text;
     request.fields['event_start_date'] = eventStartDate.text;
@@ -417,6 +417,7 @@ class _Create_online_eventState extends State<Create_online_event> with SingleTi
                     ),
                     labelText: "Enter ticket price",
                     hintText: "Enter ticket price",
+                    prefixText : "₹ ",
                     hintStyle: TextStyle(color: Colors.grey),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),

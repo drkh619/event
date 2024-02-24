@@ -24,6 +24,7 @@ class BuyNow extends StatefulWidget {
   final String event_capacity;
   final String event_description;
   final String place;
+  final String uid;
 
   BuyNow({
     required this.id,
@@ -38,6 +39,7 @@ class BuyNow extends StatefulWidget {
     required this.event_venue,
     required this.event_description,
     required this.place,
+    required this.uid,
   });
 
   @override
@@ -56,6 +58,7 @@ class _BuyNowState extends State<BuyNow> {
   void initState() {
     get_event_id = widget.id;
     checkReportStatus(widget.id);
+    print("UID:"+widget.uid);
     print(get_event_id);
 
     super.initState();
@@ -326,7 +329,7 @@ class _BuyNowState extends State<BuyNow> {
                           child: Text(
                             widget.event_price == '0'
                                 ? 'Free'
-                                : '₹' + NumberFormat('#,##,##0').format(
+                                : '₹' + NumberFormat('#,##,###').format(
                                 int.parse(widget.event_price)),
                             style: GoogleFonts.alexandria(
                               color: Theme
@@ -513,14 +516,15 @@ class _BuyNowState extends State<BuyNow> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Center(
-              child: Text('Report a Problem', style: TextStyle(fontSize: 20))),
+              child: Text('Report a Problem', style: GoogleFonts.poppins(color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black
+              ))),
           content: StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {
               return Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   RadioListTile(
-                    title: Text("Promotions"),
+                    title: Text("Advertising/Promotions"),
                     value: "promo",
                     groupValue: selectedOption,
                     onChanged: (value){
@@ -530,7 +534,7 @@ class _BuyNowState extends State<BuyNow> {
                     },
                   ),
                   RadioListTile(
-                    title: Text("Nudity"),
+                    title: Text("Profanity and Nudity"),
                     value: "nudity",
                     groupValue: selectedOption,
                     onChanged: (value){
@@ -550,7 +554,7 @@ class _BuyNowState extends State<BuyNow> {
                     },
                   ),
                   RadioListTile(
-                    title: Text("Scam"),
+                    title: Text("Scam/Illegal Activity"),
                     value: "scam",
                     groupValue: selectedOption,
                     onChanged: (value){
@@ -560,7 +564,7 @@ class _BuyNowState extends State<BuyNow> {
                     },
                   ),
                   RadioListTile(
-                    title: Text("Other"),
+                    title: Text("Other Reasons"),
                     value: "other",
                     groupValue: selectedOption,
                     onChanged: (value){
@@ -605,6 +609,7 @@ class _BuyNowState extends State<BuyNow> {
                 // Perform actions based on the selected option
                 if (selectedOption != null) {
                   print('Report submitted: $selectedOption');
+                  print(userid);
                 }
 
 
@@ -645,16 +650,21 @@ class _BuyNowState extends State<BuyNow> {
   //tohere
 
   submit() async {
+    String reportUrl = widget.event_venue != null && widget.event_venue.isNotEmpty
+        ? "$ip_address/Event_Management/report_event.php"
+        : "$ip_address/Event_Management/report_event_online.php";
+
     final response = await http.post(
-        Uri.parse(
-            "https://parietal-insanities.000webhostapp.com/Event_Management/report_event.php"),
+        Uri.parse(reportUrl),
         body: {
           "id":get_event_id,
           "status": selectedOption,
+          "uid": widget.uid,
 
         });
     if (response.statusCode == 200) {
-      print('Image Uploded');
+      print(reportUrl);
+      print('Event Reported');
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>User_HomePage()));
 
 

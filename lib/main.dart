@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'Main Entrance/Main_Screen.dart';
 
@@ -14,10 +15,10 @@ var username_org;
 var event_type;
 
 
-//var ip_address ='192.168.29.104'; //integos
-//var ip_address ='192.168.18.52'; //home-ethernet
-//var ip_address = '192.168.18.73'; //home-wifi
-var ip_address = 'parietal-insanities.000webhostapp.com';
+// var ip_address ='192.168.29.104'; //integos
+// var ip_address ='172.20.10.5'; //home-ethernet
+var ip_address = 'http://192.168.18.85'; //home-wifi
+// var ip_address = 'https://parietal-insanities.000webhostapp.com';
 //var ip_address = 'ae68-103-175-89-0.ngrok-free.app';
 
 void main() {
@@ -35,13 +36,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.light().copyWith(
         primaryColor: Colors.teal, // Define your primary color
         textTheme: TextTheme(
-          bodyText1: TextStyle(color: Colors.black), // Text color in light mode
+          bodyText1: GoogleFonts.poppins(color: Colors.black), // Text color in light mode
         ),
       ),
       darkTheme: ThemeData.dark().copyWith(
         primaryColor: Colors.purple, // Define your primary color in dark mode
         textTheme: TextTheme(
-          bodyText1: TextStyle(color: Colors.white), // Text color in dark mode
+          bodyText1: GoogleFonts.poppins(color: Colors.white), // Text color in dark mode
         ),
       ),
       themeMode: ThemeMode.system,

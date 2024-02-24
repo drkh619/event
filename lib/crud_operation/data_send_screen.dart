@@ -147,7 +147,7 @@ class _data_send_screenState extends State<data_send_screen> {
   }
   Future Submit() async {
     var APIURL =
-        "http://$ip_address/internship_crud/add_data.php";
+        "$ip_address/internship_crud/add_data.php";
 
 
     //json maping user entered details

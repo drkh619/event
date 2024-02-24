@@ -1,40 +1,33 @@
 import 'dart:convert';
-import 'package:event_management/User/checkout.dart';
 import 'package:flutter/material.dart';
-
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import 'package:http/http.dart' as http;
-
 import '../main.dart';
 
 
 //Creating a class user to store the data;
-class organizer_model {
-  final String uid;
+class userManage_model {
+  final String id;
   final String username;
   final String email;
-  var status;
 
 
-  organizer_model({
-    required this.uid,
+  userManage_model({
+    required this.id,
     required this.username,
     required this.email,
-    required this.status,
-
   });
 }
 
-class manage_organiser2 extends StatefulWidget {
+class manage_users extends StatefulWidget {
   @override
-  _manage_organiser2State createState() => _manage_organiser2State();
+  _manage_usersState createState() => _manage_usersState();
 }
 
-class _manage_organiser2State extends State<manage_organiser2> {
+class _manage_usersState extends State<manage_users> {
 
-  Future<List<organizer_model>>? _refresh;
+  Future<List<userManage_model>>? _refresh;
 
   @override
   void initState() {
@@ -50,29 +43,28 @@ class _manage_organiser2State extends State<manage_organiser2> {
 
 //Applying get request.
 
-  Future<List<organizer_model>> getRequest() async {
+  Future<List<userManage_model>> getRequest() async {
     //replace your restFull API here.
     String url =
-        "$ip_address/Event_Management/Admin/union_test.php";
+        "$ip_address/Event_Management/Admin/users.php";
 
     final response = await http.get(Uri.parse(url));
 
     var responseData = json.decode(response.body);
 
     //Creating a list to store input data;
-    List<organizer_model> users = [];
+    List<userManage_model> users = [];
     for (var singleUser in responseData) {
-      organizer_model user = organizer_model(
-        //id:  singleUser["id"].toString(),
-        username : singleUser["username"].toString(),
-        email :singleUser["email"].toString(),
-        uid : singleUser["id"].toString(),
-        status: int.parse(singleUser['status']),
+      userManage_model user = userManage_model(
+        id: singleUser["id"].toString(),
+        username: singleUser["username"].toString(),
+        email: singleUser["email"].toString(),
       );
 
 
       //Adding user to the list.
       users.add(user);
+      print(users);
     }
     return users;
   }
@@ -89,8 +81,8 @@ class _manage_organiser2State extends State<manage_organiser2> {
           backgroundColor: Theme.of(context).primaryColor,
           centerTitle: true,
           title: Text(
-            "Display Organizer",
-            style: GoogleFonts.prompt(fontSize: 22, color: Colors.white),
+            "Display Users",
+            style: GoogleFonts.poppins(fontSize: 22, color: Colors.white),
           ),
           leading: GestureDetector(
             onTap: () {
@@ -123,9 +115,9 @@ class _manage_organiser2State extends State<manage_organiser2> {
                             textColor: Colors.white,
                             webPosition: 1,
                             backgroundColor: Colors.blueGrey);
-                
+
                       //   return snapshot.hasData ? Display_Data_Items(list: snapshot.data ?? [])  : Center(child: CircularProgressIndicator(),
-                
+
                       return snapshot.hasData
                           ? ListView.builder(
                           shrinkWrap: true,
@@ -143,7 +135,7 @@ class _manage_organiser2State extends State<manage_organiser2> {
                                 //  mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 //  children: [
                                 //  Cust_Search_Bar(),
-                
+
                                 Padding(
                                   padding: const EdgeInsets.all(10.0),
                                   child:
@@ -151,73 +143,52 @@ class _manage_organiser2State extends State<manage_organiser2> {
                                   //     mainAxisAlignment: MainAxisAlignment.spaceAround,
                                   //     children: [
                                   //     Cust_Search_Bar(),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                
-                                      // Text(snapshot.data![index].status,style: TextStyle(color: Colors.black),),
-                
-                
-                
-                                      snapshot.data![index].status >= 10 ?
-                
-                                      Row(
+
+                                      // Show id on left side
+                                      Text(
+                                        snapshot.data![index].id,
+                                        style: GoogleFonts.poppins(color: Colors.black),
+                                      ),
+
+                                      // Show username and email in the middle
+                                      Column(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         crossAxisAlignment: CrossAxisAlignment.center,
                                         children: [
                                           Text(
-                                            (snapshot.data![index].username),
-                                            style: GoogleFonts.roboto(
-                                                fontSize: 20, color: Colors.yellow.shade900)
-                                          ),
-                                          SizedBox(width: 10,),
-                                          GestureDetector(
-                                            onTap: () {
-                                              delrecord(snapshot.data![index].uid);
-                                              print("deleted!"+snapshot.data![index].uid);
-                                            },
-                                            child: Icon(
-                                              Icons.delete,
-                                              color: Colors.red,
-                                            ),
-                                          )
-                
-                                        ],
-                                      ):
-                
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                              (snapshot.data![index].username),
+                                              snapshot.data![index].username,
                                               style: GoogleFonts.poppins(
                                                   fontSize: 20, color: Colors.black)
                                           ),
-                                          SizedBox(width: 10,),
-                                          GestureDetector(
-                                            onTap: () {
-                                              delrecord(snapshot.data![index].uid);
-                                              print("deleted!"+snapshot.data![index].uid);
-                                            },
-                                            child: Icon(
-                                              Icons.delete,
-                                              color: Colors.black,
-                                            ),
+                                          Text(
+                                            snapshot.data![index].email,
+                                            style: GoogleFonts.poppins(color: Colors.blue),
                                           ),
                                         ],
                                       ),
-                                      Text(snapshot.data![index].email,style: GoogleFonts.poppins(color: Colors.blue),),
-                
+
+                                      // Show delete button on the right side
+                                      IconButton(
+                                        onPressed: () {
+                                          delrecord(snapshot.data![index].id);
+                                          print("deleted!"+snapshot.data![index].id);
+                                        },
+                                        icon: Icon(
+                                          Icons.delete,
+                                          color: Colors.red,
+                                        ),
+                                      ),
                                     ],
-                                    //   ),
-                                    //
-                                    // ],
                                   ),
+
                                   // ],
+                                  //     ),
                                 ),
-                
+
                                 // ],
                                 //     ),
                               ),
@@ -261,7 +232,7 @@ class _manage_organiser2State extends State<manage_organiser2> {
 
     // If user confirms delete, proceed with deletion
     if (confirmDelete == true) {
-      String url = "$ip_address/Event_Management/delete_data.php";
+      String url = "$ip_address/Event_Management/Admin/delete_user.php";
       var res = await http.post(Uri.parse(url), body: {
         "id": id,
       });
@@ -270,7 +241,7 @@ class _manage_organiser2State extends State<manage_organiser2> {
         setState(() {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => manage_organiser2()),
+            MaterialPageRoute(builder: (context) => manage_users()),
           );
         });
         print("success");

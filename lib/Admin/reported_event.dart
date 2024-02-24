@@ -13,14 +13,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ReportedEventModel {
   final String id;
   final String eventName;
-  final String eventDescription;
+  final String eventDate;
   final String status;
+  final String event_venue;
 
   ReportedEventModel({
     required this.id,
     required this.eventName,
-    required this.eventDescription,
+    required this.eventDate,
     required this.status,
+    required this.event_venue,
+
   });
 }
 
@@ -33,7 +36,7 @@ class _ReportedEventsPageState extends State<ReportedEventsPage> {
   Future<List<ReportedEventModel>> getReportedEvents() async {
     final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
     var organizerUid = await sharedPrefs.getString('organizer_uid');
-    String url = "https://parietal-insanities.000webhostapp.com/Event_Management/Admin/reported_events.php";
+    String url = "$ip_address/Event_Management/Admin/reported_events.php";
 
     final response = await http.get(Uri.parse(url));
 
@@ -44,8 +47,9 @@ class _ReportedEventsPageState extends State<ReportedEventsPage> {
       ReportedEventModel reportedEvent = ReportedEventModel(
         id: event["id"].toString(),
         eventName: event["event_name"].toString(),
-        eventDescription: event["event_description"].toString(),
+        eventDate: event["event_start_date"].toString(),
         status: event["status"].toString(),
+        event_venue: event["event_venue"].toString(),
       );
 
       reportedEvents.add(reportedEvent);
@@ -105,40 +109,80 @@ class _ReportedEventsPageState extends State<ReportedEventsPage> {
                 );
               } else {
                 return ListView.builder(
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (ctx, index) {
-                    return Card(
-                      color: Theme.of(context).brightness == Brightness.dark
-                          ? Colors.purple.shade100
-                          : Colors.teal.shade100,
-                      child: ListTile(
-                        title: Text(snapshot.data[index].eventName, style: TextStyle(color: Colors.black, fontSize: 24),),
-                        subtitle: Text(snapshot.data[index].eventDescription, style: TextStyle(color: Colors.black54),),
-                        trailing: GestureDetector(
-                          onTap: () {
-                            // Implement action on tapping the reported event
-                            // e.g., review and resolve the reported issue
-                            // You can add more functionality here
-                            Fluttertoast.showToast(
-                              msg: 'Reported Event Tapped',
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.BOTTOM,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.blueGrey,
-                            );
-                          },
-                          child: Icon(
-                            Icons.delete_rounded,
-                            // color: Theme.of(context).brightness == Brightness.dark
-                            //     ? Colors.purple.shade900
-                            //     : Colors.teal.shade900,
-                            color: Colors.red.shade800,
+                    shrinkWrap: true,
+                    itemCount: snapshot.data?.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.fromLTRB(15.0, 2.0, 15.0, 2.0),
+                        child: Card(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.purple.shade100
+                              : Colors.teal.shade100,
+                          margin: EdgeInsets.symmetric(vertical: 10),
+                          child:
+                          // Column(
+                          //  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          //  children: [
+                          //  Cust_Search_Bar(),
+
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child:
+                            // Column(
+                            //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            //     children: [
+                            //     Cust_Search_Bar(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+
+                                // Show id on left side
+                                Text(
+                                  snapshot.data![index].id,
+                                  style: GoogleFonts.poppins(color: Colors.black),
+                                ),
+
+                                // Show username and email in the middle
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                        snapshot.data![index].eventName,
+                                        style: GoogleFonts.poppins(
+                                            fontSize: 20, color: Colors.black)
+                                    ),
+                                    Text(
+                                      snapshot.data![index].eventDate,
+                                      style: GoogleFonts.poppins(color: Colors.blue),
+                                    ),
+                                  ],
+                                ),
+
+                                // Show delete button on the right side
+                                IconButton(
+                                  onPressed: () {
+                                    delrecord(snapshot.data![index].id,snapshot.data![index].event_venue);
+                                    print("deleted!"+snapshot.data![index].eventName);
+                                  },
+                                  icon: Icon(
+                                    Icons.delete,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                            // ],
+                            //     ),
                           ),
+
+                          // ],
+                          //     ),
                         ),
-                      ),
-                    );
-                  },
-                );
+                      );
+                    });
               }
             },
           ),
@@ -146,4 +190,56 @@ class _ReportedEventsPageState extends State<ReportedEventsPage> {
       ),
     );
   }
+  Future<void> delrecord(String id, String eventVenue) async {
+    var typee;
+    // Show confirmation dialog
+    bool confirmDelete = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Confirm Delete"),
+          content: Text("Are you sure you want to delete this record?"),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                print(eventVenue);
+                Navigator.of(context).pop(false); // Cancel delete
+              },
+              child: Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true); // Confirm delete
+              },
+              child: Text("Delete"),
+            ),
+          ],
+        );
+      },
+    );
+    if (eventVenue.isNotEmpty) {
+      typee = "online";
+    } else {
+      typee = "offline";
+    }
+    // If user confirms delete, proceed with deletion
+    if (confirmDelete == true) {
+      Map<String, String> requestBody = {"id": id,"type": typee};
+      print(requestBody);
+      String url = "$ip_address/Event_Management/Admin/delete_event.php";
+      var res = await http.post(Uri.parse(url), body: requestBody);
+      var response = jsonDecode(res.body);
+      if (response["success"] == "true") {
+        setState(() {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => ReportedEventsPage()),
+          );
+        });
+        print("success");
+      }
+    }
+  }
+
+
 }

@@ -16,9 +16,9 @@ final instagram =
     "https://www.instagram.com/abhi.nand.n";
 
 void openwhatsapp() async {
-  var whatsap = "+91 9496798234";
-  var whatsapURL_android = "whatsapp://send?phone=" + whatsap + "&text=hello";
-  var whatsap_Ios = "https://wa.me/$whatsap?text=${Uri.parse("hello")}";
+  var whatsap = "+91 6282491323";
+  var whatsapURL_android = "whatsapp://send?phone=" + whatsap + "&text=Hello there! I would like to know more about EVENT.IO";
+  var whatsap_Ios = "https://wa.me/$whatsap?text=${Uri.parse("Hello there! I would like to know more about EVENT.IO")}";
   if (Platform.isIOS) {
     if (!await launch(
       whatsap_Ios,
@@ -61,12 +61,12 @@ void _launchinstagram() async {
 }
 
 void _launchUrl() async {
-  if (!await launch(
-    _url, forceWebView: false,
-    //forceSafariVC: false,
-    enableJavaScript: true,
-  )) throw 'Could not launch $_url';
-}
+    if (!await launch(
+      _url, forceWebView: false,
+      //forceSafariVC: false,
+      enableJavaScript: true,
+    )) throw 'Could not launch $_url';
+  }
 
 class About_Us extends StatefulWidget {
   const About_Us({Key? key}) : super(key: key);

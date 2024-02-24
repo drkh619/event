@@ -79,7 +79,7 @@ class _Update_data_offlineState extends State<Update_data_offline> {
 
   Future updateImage() async {
     final uri = Uri.parse(
-        "http://$ip_address/Event_Management/Organise/update_data_offline.php");
+        "$ip_address/Event_Management/Organise/update_data_offline.php");
     var request = http.MultipartRequest('POST', uri);
     request.fields['id'] = widget.data_user.id.toString();
     request.fields['event_name'] = eventName.text;

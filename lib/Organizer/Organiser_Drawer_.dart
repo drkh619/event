@@ -1,3 +1,5 @@
+import 'package:event_management/Organizer/ChangeOrgPassword.dart';
+import 'package:event_management/Organizer/organizer_feedback.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -53,6 +55,24 @@ class Organiser_Drawer extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
+                      builder: (context) => ChangeOrgPasswordPage()));
+            },
+            leading: Icon(
+              Icons.password,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.blueGrey.shade100
+                  : Colors.blueGrey.shade900,
+            ),
+            title: Text("Change Password",
+                style: GoogleFonts.prompt(
+                  fontSize: 15,
+                )),
+          ),
+          ListTile(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
                       builder: (context) => About_Us()));
             },
             leading: Icon(
@@ -62,6 +82,24 @@ class Organiser_Drawer extends StatelessWidget {
                   : Colors.blueGrey.shade900,
             ),
             title: Text("About",
+                style: GoogleFonts.prompt(
+                  fontSize: 15,
+                )),
+          ),
+          ListTile(
+            onTap: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => OrgFeedbackPage())); // Navigate to FAQ page
+            },
+            leading: Icon(
+              Icons.feedback, // Use the help icon for FAQ
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.blueGrey.shade100
+                  : Colors.blueGrey.shade900,
+            ),
+            title: Text("Feedback", // Add a link to FAQ
                 style: GoogleFonts.prompt(
                   fontSize: 15,
                 )),
@@ -108,11 +146,11 @@ class Organiser_Drawer extends StatelessWidget {
     final _CustomersharedPrefs = await SharedPreferences.getInstance();
     await _CustomersharedPrefs.remove('organizer_id');
 
-    Navigator.pushAndRemoveUntil(
-      ctx,
-      MaterialPageRoute(builder: (ctx1) => Organizer_Login_Page()),
-          (route) => false,
-    );
+    // Navigator.pushAndRemoveUntil(
+    //   ctx,
+    //   MaterialPageRoute(builder: (ctx1) => Organizer_Login_Page()),
+    //       (route) => false,
+    // );
     print("logged out");
   }
 }

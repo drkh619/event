@@ -23,7 +23,7 @@ class _Edit_dataState extends State<Edit_data> {
 
   submit() async {
     final response = await http.post(
-        Uri.parse("http://$ip_address/internship_crud/update_data.php"),
+        Uri.parse("$ip_address/internship_crud/update_data.php"),
         body: {
           "id": widget.data_user.id.toString(),
           "name": name.text,

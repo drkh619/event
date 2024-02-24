@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:event_management/main.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -44,7 +45,17 @@ class _User_Login_PageState extends State<User_Login_Page> {
     return Scaffold(
       appBar: AppBar(
         title: Text('User Login',
-          style: TextStyle(color: Colors.white,
+          style: GoogleFonts.poppins(color: Colors.white,
+          ),
+        ),
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(
+            Icons.arrow_back_rounded,
+            color: Colors.white,
+            size: 35,
           ),
         ),
         backgroundColor: Theme.of(context).primaryColor,
@@ -75,7 +86,9 @@ class _User_Login_PageState extends State<User_Login_Page> {
                       },
                       onSaved: (username) {},
                       decoration: InputDecoration(
-                        border: OutlineInputBorder(),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
                         labelText: 'Username',
                         hintText: 'Enter Username',
                       ),
@@ -100,7 +113,9 @@ class _User_Login_PageState extends State<User_Login_Page> {
                       style: TextStyle(color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black),
                       obscureText: !_isPasswordVisible,
                       decoration: InputDecoration(
-                        border: OutlineInputBorder(),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
                         labelText: 'Password',
                         hintText: 'Enter secure password',
                         suffixIcon: IconButton(
@@ -175,7 +190,7 @@ class _User_Login_PageState extends State<User_Login_Page> {
   }
 
   Future user_Login() async {
-    var url = "http://$ip_address/Event_Management/User/user_login.php";
+    var url = "$ip_address/Event_Management/User/user_login.php";
     var response =  await http.post(Uri.parse(url), headers: {
       'Accept': 'application/json'
     }, body: {

@@ -59,7 +59,7 @@ class _Send_data_With_ImageState extends State<Send_data_With_Image> {
 
   Future uploadImage() async {
     final uri = Uri.parse(
-        "http://$ip_address/event_mngmnt2/add_data_with_image.php");
+        "$ip_address/event_mngmnt2/add_data_with_image.php");
     var request = http.MultipartRequest('POST', uri);
     request.fields['price'] = price.text;
     request.fields['name'] = name.text;

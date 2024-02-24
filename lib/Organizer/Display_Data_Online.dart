@@ -16,7 +16,7 @@ import 'display_data_detail_online.dart';
 
 //Creating a class user to store the data;
 class online_data_model {
-   final String id;
+  final String id;
   final String event_name;
   final String event_start_date;
   final String event_end_date;
@@ -56,7 +56,7 @@ class _Display_Data_OnlineState extends State<Display_Data_Online> {
     var ui = await sharedprefs.getString('organizer_uid');
 
 
-    String url = "http://$ip_address/Event_Management/display_data.php?uid="+ui!;
+    String url = "$ip_address/Event_Management/display_data.php?uid="+ui!;
 
     final response = await http.get(Uri.parse(url));
 
@@ -130,7 +130,27 @@ class _Display_Data_OnlineState extends State<Display_Data_Online> {
                     ),
                   ),
                 );
-              } else {
+              }
+              else if (snapshot.data.isEmpty) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Lottie.asset(
+                        Theme.of(context).brightness == Brightness.dark
+                            ? 'assets/animatedark.json'
+                            : 'assets/animate2.json',
+                      ),
+                      SizedBox(height: 30),
+                      Text(
+                        'Create Some Events to get started..',
+                        style: GoogleFonts.poppins(fontSize: 16),
+                      ),
+                    ],
+                  ),
+                );
+              }
+              else {
                 return ListView.builder(
                   itemCount: snapshot.data.length,
                   itemBuilder: (ctx, index) {
@@ -188,7 +208,7 @@ class _Display_Data_OnlineState extends State<Display_Data_Online> {
                                     ),
                                   ),
                                   subtitle: Text(snapshot.data[index].event_start_date),
-                                  trailing: daysDifference >= -2
+                                  trailing: daysDifference >= -10
                                       ? IgnorePointer(
                                     child: Icon(
                                       Icons.delete,
@@ -202,14 +222,6 @@ class _Display_Data_OnlineState extends State<Display_Data_Online> {
                                       setState(() {
                                         delrecord(snapshot.data[index].id);
                                       });
-
-                                      Fluttertoast.showToast(
-                                        msg: 'Data Deleted',
-                                        toastLength: Toast.LENGTH_LONG,
-                                        gravity: ToastGravity.BOTTOM,
-                                        timeInSecForIosWeb: 1,
-                                        backgroundColor: Colors.blueGrey,
-                                      );
                                     },
                                     child: Icon(
                                       Icons.delete,
@@ -237,23 +249,57 @@ class _Display_Data_OnlineState extends State<Display_Data_Online> {
   }
 
   Future<void> delrecord(String id) async {
-    String url =
-        "http://$ip_address/Event_Management/Organise/delete_data_online.php";
-    var res = await http.post(Uri.parse(url), body: {
-      "id": id,
-    });
-    var resoponse = jsonDecode(res.body);
-    if (resoponse["success"] == "true") {
-      setState(() {
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>  Display_Data_Online()));
+    // Show confirmation dialog
+    bool confirmDelete = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Confirm Delete"),
+          content: Text("Are you sure you want to delete this Event?"),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false); // Cancel delete
+              },
+              child: Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true); // Confirm delete
+              },
+              child: Text("Delete"),
+            ),
+          ],
+        );
+      },
+    );
 
+    // If user confirms delete, proceed with deletion
+    if (confirmDelete == true) {
+      String url = "$ip_address/Event_Management/Organise/delete_data_online.php";
+      var res = await http.post(Uri.parse(url), body: {
+        "id": id,
       });
-print("success");
+      var response = jsonDecode(res.body);
+      if (response["success"] == "true") {
+        setState(() {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => Display_Data_Online()),
+          );
+        });
+        print("success");
+        Fluttertoast.showToast(
+          msg: 'Data Deleted',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.blueGrey,
+        );
+      }
     }
   }
+
 }
 
 

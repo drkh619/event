@@ -328,7 +328,7 @@ class _Registration_PageState extends State<Registration_Page> {
   }
 
   Future Registration() async {
-    var APIURL = "http://$ip_address/Event_Management/Admin/admin_Registration.php";
+    var APIURL = "$ip_address/Event_Management/Admin/admin_Registration.php";
 
     //json maping user entered details
     Map mapeddate = {

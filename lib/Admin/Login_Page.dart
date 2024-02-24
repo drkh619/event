@@ -25,19 +25,46 @@ class _Login_PageState extends State<Login_Page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Admin Login',
-          style: TextStyle(color: Colors.white,
-          ),
-        ),
-        backgroundColor: Theme.of(context).primaryColor,
-        elevation: 0,
-        centerTitle: true,
-      ),
+      // appBar: AppBar(
+      //   title: Text('Admin Login',
+      //     style: TextStyle(color: Colors.white,
+      //     ),
+      //   ),
+      //   backgroundColor: Theme.of(context).primaryColor,
+      //   elevation: 0,
+      //   centerTitle: true,
+      // ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
             SizedBox(height: 100,),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 36.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  // BackButton(),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 25.0,bottom: 25.0,right: 50.0,left: 50.0),
+                    child: Center(
+                      child: Text(
+                        'Admin Login',
+                        style: TextStyle(
+                          color: Theme
+                              .of(context)
+                              .brightness == Brightness.dark
+                              ? Colors.white
+                              : Colors.black,
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                ],
+              ),
+            ),
             Form(
               key: formkey,
               child: Column(
@@ -108,7 +135,9 @@ class _Login_PageState extends State<Login_Page> {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                shape: StadiumBorder(),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
                 backgroundColor: Theme.of(context).primaryColor,
                 padding: EdgeInsets.only(
                   left: 110,
@@ -122,7 +151,7 @@ class _Login_PageState extends State<Login_Page> {
               },
               child: Text(
                 'Login',
-                style: TextStyle(color: Colors.white, fontSize: 15),
+                style: TextStyle(color: Colors.white, fontSize: 18),
               ),
             ),
             SizedBox(
@@ -156,7 +185,7 @@ class _Login_PageState extends State<Login_Page> {
   }
 
   Future admin_Login() async {
-    var url = "http://$ip_address/Event_Management/Admin/admin_login.php";
+    var url = "$ip_address/Event_Management/Admin/admin_login.php";
     var response =  await http.post(Uri.parse(url), headers: {
       'Accept': 'application/json'
     }, body: {
@@ -171,6 +200,7 @@ class _Login_PageState extends State<Login_Page> {
         await SharedPreferences.getInstance();
 
         await sharedpreferences.setString('admin_id', singleUser["id"]);
+        await sharedpreferences.setString('admin_name', singleUser["username"]);
       }
 
       final snackBar = SnackBar(

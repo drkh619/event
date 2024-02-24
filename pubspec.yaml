@@ -54,7 +54,11 @@ dependencies:
   input_quantity:
   flutter_any_logo:
   fl_chart: ^0.40.0
-  #flutter_animated_buttons: ^3.0.0
+  newton_particles: ^0.1.7
+  flutter_sms:
+  table_calendar: ^3.0.0
+  flutter_event_calendar:
+  qr_flutter:
 
 dev_dependencies:
   flutter_test:

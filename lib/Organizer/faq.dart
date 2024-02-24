@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 
 class FAQPage extends StatelessWidget {
@@ -6,8 +7,19 @@ class FAQPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('FAQ'),
+        centerTitle: true,
+        title: Text('FAQ',style: GoogleFonts.poppins(color: Colors.white)),
         backgroundColor: Theme.of(context).primaryColor,
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(
+            Icons.arrow_back_rounded,
+            color: Colors.white,
+            size: 35,
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -86,20 +98,18 @@ class FAQItem extends StatelessWidget {
       children: [
         Text(
           question,
-          style: TextStyle(
+          style: GoogleFonts.poppins(
             color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            fontFamily: 'Arial',
           ),
         ),
         SizedBox(height: 8),
         Text(
           answer,
-          style: TextStyle(
+          style: GoogleFonts.poppins(
             color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
             fontSize: 16,
-            fontFamily: 'Arial',
           ),
         ),
         Divider(),

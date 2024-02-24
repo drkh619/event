@@ -17,6 +17,7 @@ class Organizer_Login_Page extends StatefulWidget {
 }
 
 class _Organizer_Login_PageState extends State<Organizer_Login_Page> {
+  PageController controller = PageController(initialPage: 0);
 
 
   getID()async{
@@ -75,7 +76,9 @@ class _Organizer_Login_PageState extends State<Organizer_Login_Page> {
                       },
                       onSaved: (username) {},
                       decoration: InputDecoration(
-                        border: OutlineInputBorder(),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
                         labelText: 'Username',
                         hintText: 'Enter your Username',
                       ),
@@ -99,7 +102,9 @@ class _Organizer_Login_PageState extends State<Organizer_Login_Page> {
                       ),
                       obscureText: !_isPasswordVisible,
                       decoration: InputDecoration(
-                        border: OutlineInputBorder(),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
                         labelText: 'Password',
                         hintText: 'Enter secure password',
                         suffixIcon: IconButton(
@@ -161,6 +166,7 @@ class _Organizer_Login_PageState extends State<Organizer_Login_Page> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => Organizer_Registration_Page(),
+                        // builder: (context) => SingUpScreen(controller: null,),
                       ),
                     );
                   },
@@ -175,7 +181,7 @@ class _Organizer_Login_PageState extends State<Organizer_Login_Page> {
   }
 
   Future organiser_Login() async {
-    var url = "http://$ip_address/Event_Management/Organise/organiser_login.php";
+    var url = "$ip_address/Event_Management/Organise/organiser_login.php";
     print(url);
     var response =  await http.post(Uri.parse(url), headers: {
       'Accept': 'application/json'
