@@ -16,8 +16,8 @@ var event_type;
 
 
 // var ip_address ='192.168.29.104'; //integos
-// var ip_address ='172.20.10.5'; //home-ethernet
-var ip_address = 'http://192.168.18.85'; //home-wifi
+// var ip_address ='http://192.168.1.8'; //home-ethernet
+var ip_address = 'http://192.168.4.177'; //home-wifi
 // var ip_address = 'https://parietal-insanities.000webhostapp.com';
 //var ip_address = 'ae68-103-175-89-0.ngrok-free.app';
 

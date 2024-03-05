@@ -181,59 +181,59 @@ class _Organizer_Login_PageState extends State<Organizer_Login_Page> {
   }
 
   Future organiser_Login() async {
-    var url = "$ip_address/Event_Management/Organise/organiser_login.php";
-    print(url);
-    var response =  await http.post(Uri.parse(url), headers: {
-      'Accept': 'application/json'
-    }, body: {
-      "username": username.text,
-      "password": password.text,
-    });
+    if (formkey.currentState!.validate()) {
+      var url = "$ip_address/Event_Management/Organise/organiser_login.php";
+      print(url);
+      var response = await http.post(Uri.parse(url), headers: {
+        'Accept': 'application/json'
+      }, body: {
+        "username": username.text,
+        "password": password.text,
+      });
 
-    var data = json.decode(response.body);
-    if (data != null) {
-      for (var singleUser in data) {
-        final SharedPreferences sharedpreferences =
-        await SharedPreferences.getInstance();
+      var data = json.decode(response.body);
+      if (data != null) {
+        for (var singleUser in data) {
+          final SharedPreferences sharedpreferences =
+          await SharedPreferences.getInstance();
 
-        await sharedpreferences.setString('organizer_id', singleUser["id"]);
+          await sharedpreferences.setString('organizer_id', singleUser["id"]);
 
+          userid = singleUser["id"];
+          username_org = singleUser["username"];
 
+          getusername();
+          getID();
+        }
 
-        userid=singleUser["id"];
-        username_org=singleUser["username"];
+        final snackBar = SnackBar(
+          content: Text('Login Successful'),
+          action: SnackBarAction(
+            label: 'Ok',
+            onPressed: () {},
+          ),
+        );
 
-        getusername();
-        getID();
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) => OnboardingPage1(),
+          ),
+        );
+      } else {
+        final snackBar = SnackBar(
+          content: Text('Username and password invalid'),
+          action: SnackBarAction(
+            label: 'Undo',
+            onPressed: () {},
+          ),
+        );
+
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
-
-      final snackBar = SnackBar(
-        content: Text('Login Successfull'),
-        action: SnackBarAction(
-          label: 'Ok',
-          onPressed: () {},
-        ),
-      );
-
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (BuildContext context) => OnboardingPage1(),
-        ),
-      );
-    } else {
-      final snackBar = SnackBar(
-        content: Text('Username and password invalid'),
-        action: SnackBarAction(
-          label: 'Undo',
-          onPressed: () {},
-        ),
-      );
-
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
+
 }

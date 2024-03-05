@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:event_management/User/User_drawer.dart';
 import 'package:event_management/User/buynow.dart';
 import 'package:event_management/User/parallax_swiper.dart';
+import 'package:event_management/notification_services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -23,12 +24,16 @@ class User_HomePage extends StatefulWidget {
 }
 
 class _User_HomePageState extends State<User_HomePage> {
+  NotificationServices notificationsServices = new NotificationServices();
 
   Future<List<dynamic>>? _refresh;
 
   @override
   void initState() {
     super.initState();
+    notificationsServices.initializeNotification();
+
+    notificationsServices.shcheduleNotification('New Events Added!!', 'Check Out New Events');
     _refresh = getAllEvents();
   }
 
@@ -85,9 +90,25 @@ class _User_HomePageState extends State<User_HomePage> {
     final ordersResponse = await http.get(Uri.parse(ordersUrl));
 
     if (eventsResponse.statusCode == 200 && ordersResponse.statusCode == 200) {
-      // Decode events and orders data
+      // Decode events data
       List<dynamic> allEvents = json.decode(eventsResponse.body);
-      List<dynamic> orders = json.decode(ordersResponse.body);
+
+      // Initialize orders list
+      List<dynamic> orders = [];
+
+      try {
+        // Attempt to decode orders data
+        if (ordersResponse.body.isNotEmpty) {
+          orders = json.decode(ordersResponse.body);
+        } else {
+          print("No orders found");
+        }
+      } catch (e) {
+        print("Error decoding orders: $e");
+        // Handle the error accordingly
+        // For example, set orders to an empty list or throw an exception
+        orders = [];
+      }
 
       // Get today's date
       DateTime today = DateTime.now();
@@ -115,6 +136,8 @@ class _User_HomePageState extends State<User_HomePage> {
       throw Exception('Failed to load events or orders');
     }
   }
+
+
 
 
   @override

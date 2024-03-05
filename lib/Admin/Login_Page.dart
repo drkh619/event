@@ -157,27 +157,27 @@ class _Login_PageState extends State<Login_Page> {
             SizedBox(
               height: 20,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'New User?',
-                  style: TextStyle(color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black
-                      , fontSize: 15),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Registration_Page(),
-                      ),
-                    );
-                  },
-                  child: Text("Create Account"),
-                )
-              ],
-            )
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: [
+            //     Text(
+            //       'New User?',
+            //       style: TextStyle(color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black
+            //           , fontSize: 15),
+            //     ),
+            //     TextButton(
+            //       onPressed: () {
+            //         Navigator.push(
+            //           context,
+            //           MaterialPageRoute(
+            //             builder: (context) => Registration_Page(),
+            //           ),
+            //         );
+            //       },
+            //       child: Text("Create Account"),
+            //     )
+            //   ],
+            // )
           ],
         ),
       ),

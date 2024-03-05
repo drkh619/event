@@ -186,16 +186,17 @@ class _YourOrdersPageState extends State<YourOrdersPage> {
     List<dynamic> eventData = json.decode(response.body);
 
     String link = eventData.isNotEmpty ? eventData[0]['event_link'] : '';
-    String dateString = eventData[0]['event_end_date'];
+    String dateString = eventData.isNotEmpty ? eventData[0]['event_end_date'] : '';
 
-    DateTime eventEndDate = DateFormat('dd-MM-yyyy').parse(dateString);
-    DateTime today = DateTime.now();
+    // DateTime eventEndDate = DateFormat('dd-MM-yyyy').parse(dateString);
+    // DateTime today = DateTime.now();
 
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Your Ticket', style: GoogleFonts.poppins()),
+          title: Text('Your Ticket', style: GoogleFonts.poppins(color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black
+          )),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -209,15 +210,15 @@ class _YourOrdersPageState extends State<YourOrdersPage> {
               ),
               SizedBox(height: 8),
               Text('Event Name: $eventName',
-                  style: GoogleFonts.poppins(fontSize: 18)),
+                  style: GoogleFonts.poppins(fontSize: 18,color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black)),
               Text('Event Type: $eventType',
-                  style: GoogleFonts.poppins(fontSize: 18)),
+                  style: GoogleFonts.poppins(fontSize: 18,color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black)),
               Text('Event ID: $eventId',
-                  style: GoogleFonts.poppins(fontSize: 18)),
+                  style: GoogleFonts.poppins(fontSize: 18,color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black)),
               if (eventType == 'online_event' && link.isNotEmpty) ...[
                 SizedBox(height: 8),
                 Text('Event Link: $link',
-                    style: GoogleFonts.poppins(fontSize: 18)),
+                    style: GoogleFonts.poppins(fontSize: 18,color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black)),
               ],
               SizedBox(height: 16),
             ],
@@ -238,7 +239,7 @@ class _YourOrdersPageState extends State<YourOrdersPage> {
                       child: Text('Open Link'),
                     ),
                   ],
-                  TextButton(
+                  ElevatedButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                     },

@@ -107,7 +107,7 @@ class _UnpaidPageState extends State<UnpaidPage> {
                   fontStyle: FontStyle.normal,
                   fontSize: 20.0)),
           onPressed: () {
-            Navigator.push(
+            Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (context) =>

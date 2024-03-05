@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:event_management/User/User_Home_Page.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'dart:math' as math;
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart';
@@ -9,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 
 import '../main.dart';
+import '../notification_services.dart';
 
 
 
@@ -43,6 +45,7 @@ class CheckoutPage extends StatefulWidget {
 
 class _CheckoutPageState extends State<CheckoutPage> {
 
+  NotificationServices notificationsServices = new NotificationServices();
   String formattedDate = DateFormat('dd-MM-yyyy').format(DateTime.now().toLocal());
 
 
@@ -113,6 +116,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
   void initState() {
     retrieveOrgId(event_type, widget.event_name);
     super.initState();
+    notificationsServices.initializeNotification();
 
     _items = [
       {'name': widget.event_name, 'price': widget.event_price},
@@ -300,6 +304,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     // Validate the form before processing the payment
                     if (_validateForm()) {
                       // Show the Lottie animation
+                      notificationsServices.sendNotification('Ticket Purchased Successfully!🎉', 'Ticekt Purchased Successfully, Get deails on Your Orders page🎉');
                       showDialog(
                         context: context,
                         barrierDismissible: false, // Prevent dismissing on tap
@@ -307,7 +312,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
                           content: buildLottieAnimation(),
                         ),
                       );
-
                       // Simulate a delay (replace this with your actual payment processing)
                       Future.delayed(Duration(seconds: 3), () {
                         // Close the Lottie animation dialog
@@ -319,6 +323,14 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             builder: (context) => User_HomePage(),
                           ),);
                       });
+                      DateTime previousDate = DateTime.parse(formattedDate).subtract(Duration(days: 1));
+
+                      // Schedule notification for the previous date at 10 AM
+                      notificationsServices.scheduleDateNotification(
+                        'Reminder!',
+                        'Your event is tomorrow! Don\'t forget to attend.',
+                        DateTime(previousDate.year, previousDate.month, previousDate.day, 10, 0),
+                      );
                     }
                   },
                   style: ElevatedButton.styleFrom(
@@ -335,10 +347,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     ),
                   ),
                   child: Text('Pay Now',
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                       color: Colors.white,
                       fontWeight: FontWeight.w400,
-                      fontFamily: 'RaleWay',
                       fontSize: 18.0),
                   ),
                 ),
@@ -586,6 +597,46 @@ class _CheckoutPageState extends State<CheckoutPage> {
       'event_type':event_type,
       'purchase_date':formattedDate,
     };
+
+    // Validate if payment method is selected
+    if (_selectedPaymentMethod < 0) {
+      // Show error message for payment method selection
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Please select a payment method.'),
+        ),
+      );
+      return false;
+    }
+
+    // Validate credit card details if selected
+    if (_selectedPaymentMethod == 0) {
+      if (_cardNumberController.text.isEmpty ||
+          _expiryDate.text.isEmpty ||
+          _cvv.text.isEmpty) {
+        // Show error message for credit card details
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Please fill in all credit card details.'),
+          ),
+        );
+        return false;
+      }
+    }
+
+    // Validate UPI ID if Google Pay is selected
+    if (_selectedPaymentMethod == 1) {
+      if (_upiId.text.isEmpty) {
+        // Show error message for UPI ID
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Please enter a UPI ID.'),
+          ),
+        );
+        return false;
+      }
+    }
+
 
     if (_billingAddress.text.isNotEmpty) {
       paymentData['billing'] = _billingAddress.text;

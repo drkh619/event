@@ -48,6 +48,14 @@ class _HomePageState extends State<HomePage> {
             SizedBox(
               height: 70,
             ),
+            CircleAvatar(
+              backgroundColor: Colors.transparent,
+              radius: 90.0,
+              backgroundImage: AssetImage(
+                "assets/logo.png",
+              ),
+            ),
+            SizedBox(height: 70,),
             ListTile(
               leading: const Icon(Icons.star),
               title: const Text('Customer Feedback '),

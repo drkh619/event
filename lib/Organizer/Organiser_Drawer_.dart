@@ -1,4 +1,5 @@
 import 'package:event_management/Organizer/ChangeOrgPassword.dart';
+import 'package:event_management/Organizer/infoBought.dart';
 import 'package:event_management/Organizer/organizer_feedback.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -64,6 +65,24 @@ class Organiser_Drawer extends StatelessWidget {
                   : Colors.blueGrey.shade900,
             ),
             title: Text("Change Password",
+                style: GoogleFonts.prompt(
+                  fontSize: 15,
+                )),
+          ),
+          ListTile(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => NotificationPage()));
+            },
+            leading: Icon(
+              Icons.inbox,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.blueGrey.shade100
+                  : Colors.blueGrey.shade900,
+            ),
+            title: Text("Ticket info",
                 style: GoogleFonts.prompt(
                   fontSize: 15,
                 )),

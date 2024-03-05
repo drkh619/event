@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'package:event_management/main.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:lottie/lottie.dart';
 
 class ChangeOrgPasswordPage extends StatefulWidget {
   @override
@@ -29,7 +31,7 @@ class _ChangeOrgPasswordPageState extends State<ChangeOrgPasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Change Password'),
+        title: Text('Change Password',style: GoogleFonts.poppins(),),
       ),
       body: Padding(
         padding: EdgeInsets.all(20.0),
@@ -49,8 +51,17 @@ class _ChangeOrgPasswordPageState extends State<ChangeOrgPasswordPage> {
                   return null;
                 },
                 obscureText: _obscureOldPassword,
-                decoration: InputDecoration(
+                decoration:  InputDecoration(
                   labelText: 'Old Password',
+                  labelStyle: TextStyle(color: Colors.grey), // Change label text color if needed
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.purple.shade800),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey.shade400),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   suffixIcon: GestureDetector(
                     onTap: () {
                       setState(() {
@@ -84,8 +95,17 @@ class _ChangeOrgPasswordPageState extends State<ChangeOrgPasswordPage> {
                   return null;
                 },
                 obscureText: _obscureNewPassword,
-                decoration: InputDecoration(
+                decoration:  InputDecoration(
                   labelText: 'New Password',
+                  labelStyle: TextStyle(color: Colors.grey), // Change label text color if needed
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.purple.shade800),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey.shade400),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   suffixIcon: GestureDetector(
                     onTap: () {
                       setState(() {
@@ -99,13 +119,28 @@ class _ChangeOrgPasswordPageState extends State<ChangeOrgPasswordPage> {
                 ),
               ),
               SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    _changePassword();
-                  }
-                },
-                child: Text('Change Password'),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      _changePassword();
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: Theme.of(context).primaryColor, // Background color
+                    onPrimary: Colors.white, // Text color
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10), // Rounded corners
+                    ),
+                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20), // Button padding
+                  ),
+                  child: Text(
+                    'Change Password',
+                    style: GoogleFonts.poppins(
+                      fontSize: 16, // Text size
+                    ),
+                  ),
+                ),
               ),
               SizedBox(height: 20),
               Padding(
@@ -126,7 +161,7 @@ class _ChangeOrgPasswordPageState extends State<ChangeOrgPasswordPage> {
                       ),
                     ),
                     SizedBox(width: 10),
-                    Text("Contains at least 8 characters"),
+                    Text("Contains at least 8 characters",style: GoogleFonts.poppins(color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black),),
                   ],
                 ),
               ),
@@ -149,7 +184,7 @@ class _ChangeOrgPasswordPageState extends State<ChangeOrgPasswordPage> {
                       ),
                     ),
                     SizedBox(width: 10),
-                    Text("Contains at least 1 number"),
+                    Text("Contains at least 1 number",style: GoogleFonts.poppins(color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black),),
                   ],
                 ),
               ),
@@ -172,7 +207,7 @@ class _ChangeOrgPasswordPageState extends State<ChangeOrgPasswordPage> {
                       ),
                     ),
                     SizedBox(width: 10),
-                    Text("Contains at least 1 Uppercase and Symbol"),
+                    Expanded(child: Text("Contains at least 1 Uppercase and Symbol",style: GoogleFonts.poppins(color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black),)),
                   ],
                 ),
               ),
@@ -241,7 +276,15 @@ class _ChangeOrgPasswordPageState extends State<ChangeOrgPasswordPage> {
           builder: (BuildContext context) {
             return AlertDialog(
               title: Text('Success'),
-              content: Text(responseData['message']),
+              content: Column(
+                mainAxisSize: MainAxisSize.min, // Set mainAxisSize to min
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  buildLottieAnimation(),
+                  SizedBox(height: 16), // Add some space between the animation and text
+                  Text('Yay your password has changed!🎉'),
+                ],
+              ),
               actions: [
                 TextButton(
                   onPressed: () {
@@ -258,6 +301,14 @@ class _ChangeOrgPasswordPageState extends State<ChangeOrgPasswordPage> {
       // Handle other status codes as needed
       print('Error: ${response.reasonPhrase}');
     }
+  }
+
+  Widget buildLottieAnimation() {
+    return Container(
+      height: 200, // Adjust the height as needed
+      width: 200, // Adjust the width as needed
+      child: Lottie.asset('assets/thankyou.json'),
+    );
   }
 
   @override

@@ -104,6 +104,27 @@ class _OrgFeedbackPageState extends State<OrgFeedbackPage> {
 
 
   Future<void> _submitFeedback() async {
+    if (_feedbackController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Please enter your feedback'),
+          duration: Duration(seconds: 3),
+        ),
+      );
+      return; // Stop the execution if feedback is empty
+    }
+
+    // Ensure that required variables are not null
+    if (ip_address == null || user_Id == null || username_user == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error: Required information is missing'),
+          duration: Duration(seconds: 3),
+        ),
+      );
+      return;
+    }
+
     final String url = '$ip_address/Event_Management/feedback.php';
 
     // Send the feedback to the server
@@ -111,9 +132,9 @@ class _OrgFeedbackPageState extends State<OrgFeedbackPage> {
       Uri.parse(url),
       body: {
         'feedback': _feedbackController.text,
-        'uid': userid,
-        'type':'Organizer',
-        'user':username_user,
+        'uid': userid!,
+        'type': 'Organizer',
+        'user': username_org!,
         // Add any additional parameters needed for the API
       },
     );
@@ -131,8 +152,11 @@ class _OrgFeedbackPageState extends State<OrgFeedbackPage> {
           return AlertDialog(
             title: Text('Feedback Submitted'),
             content: Column(
+              mainAxisSize: MainAxisSize.min, // Set mainAxisSize to min
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 buildLottieAnimation(),
+                SizedBox(height: 16,),
                 Text('Thank you for your feedback!'),
               ],
             ),
@@ -158,6 +182,7 @@ class _OrgFeedbackPageState extends State<OrgFeedbackPage> {
     }
   }
 
+
   @override
   void dispose() {
     _feedbackController.dispose();
@@ -168,6 +193,6 @@ Widget buildLottieAnimation() {
   return Container(
     height: 200, // Adjust the height as needed
     width: 200, // Adjust the width as needed
-    child: Lottie.asset('assets/thanks.json'),
+    child: Lottie.asset('assets/thankyou.json'),
   );
 }

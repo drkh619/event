@@ -452,7 +452,8 @@ class _Organizer_Registration_PageState extends State<Organizer_Registration_Pag
                           ),
                         ),
                         SizedBox(width: 10),
-                        Text("Contains at least 8 characters"),
+                        Text("Contains at least 8 characters",style: TextStyle(color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black
+                        ),),
                       ],
                     ),
                   ),
@@ -480,7 +481,8 @@ class _Organizer_Registration_PageState extends State<Organizer_Registration_Pag
                           ),
                         ),
                         SizedBox(width: 10),
-                        Text("Contains at least 1 number"),
+                        Text("Contains at least 1 number",style: TextStyle(color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black
+                        ),),
                       ],
                     ),
                   ),
@@ -508,7 +510,8 @@ class _Organizer_Registration_PageState extends State<Organizer_Registration_Pag
                           ),
                         ),
                         SizedBox(width: 10),
-                        Text("Contains at least 1 Uppercase and Symbol"),
+                        Text("Contains at least 1 Uppercase and Symbol",style: TextStyle(color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black
+                        ),),
                       ],
                     ),
                   ),

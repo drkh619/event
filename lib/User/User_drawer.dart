@@ -28,7 +28,7 @@ class User_Drawer extends StatelessWidget {
                     backgroundColor: Colors.transparent,
                     radius: 90.0,
                     backgroundImage: AssetImage(
-                      "assets/event.png",
+                      "assets/logo.png",
                     ),
                   ),
                   Padding(

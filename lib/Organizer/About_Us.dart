@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 
 final _url = 'https://eventio.drkh619.repl.co/';
 //final Uri _url = Uri.parse('https://www.astrasoftwaresolutions.com');
-final phoneNumber = '+91 0895450639';
+final phoneNumber = '+91 9496798234';
 final url = 'sms:$phoneNumber';
 final facebook =
     "https://www.facebook.com/abhinand.nmurali";
@@ -16,7 +16,7 @@ final instagram =
     "https://www.instagram.com/abhi.nand.n";
 
 void openwhatsapp() async {
-  var whatsap = "+91 6282491323";
+  var whatsap = "+91 9778790440";
   var whatsapURL_android = "whatsapp://send?phone=" + whatsap + "&text=Hello there! I would like to know more about EVENT.IO";
   var whatsap_Ios = "https://wa.me/$whatsap?text=${Uri.parse("Hello there! I would like to know more about EVENT.IO")}";
   if (Platform.isIOS) {

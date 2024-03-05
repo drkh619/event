@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:event_management/Organizer/Organizer_Splash_Screen.dart';
 import 'package:event_management/User/User_Splash_Screen.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../Admin/Splash_Screen.dart';
 
@@ -42,6 +43,10 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
     _startGradientAnimation();
+    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+    flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>()?.requestNotificationsPermission();
   }
 
   @override

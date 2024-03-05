@@ -138,26 +138,32 @@ class _ReportedEventsPageState extends State<ReportedEventsPage> {
                               children: [
 
                                 // Show id on left side
-                                Text(
-                                  snapshot.data![index].id,
-                                  style: GoogleFonts.poppins(color: Colors.black),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 8.0),
+                                  child: Text(
+                                    snapshot.data![index].id,
+                                    style: GoogleFonts.poppins(color: Colors.black),
+                                  ),
                                 ),
 
-                                // Show username and email in the middle
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                        snapshot.data![index].eventName,
-                                        style: GoogleFonts.poppins(
-                                            fontSize: 20, color: Colors.black)
-                                    ),
-                                    Text(
-                                      snapshot.data![index].eventDate,
-                                      style: GoogleFonts.poppins(color: Colors.blue),
-                                    ),
-                                  ],
+                                Expanded(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      SingleChildScrollView(
+                                        child: Text(
+                                            snapshot.data![index].eventName,
+                                            style: GoogleFonts.poppins(
+                                                fontSize: 20, color: Colors.black)
+                                        ),
+                                      ),
+                                      Text(
+                                        snapshot.data![index].eventDate,
+                                        style: GoogleFonts.poppins(color: Colors.blue),
+                                      ),
+                                    ],
+                                  ),
                                 ),
 
                                 // Show delete button on the right side

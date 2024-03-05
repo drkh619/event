@@ -101,6 +101,16 @@ class _FeedbackPageState extends State<FeedbackPage> {
 
 
   Future<void> _submitFeedback() async {
+    if (_feedbackController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Please enter your feedback'),
+          duration: Duration(seconds: 3),
+        ),
+      );
+      return; // Stop the execution if feedback is empty
+    }
+
     final String url = '$ip_address/Event_Management/feedback.php';
 
     // Send the feedback to the server
@@ -109,8 +119,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
       body: {
         'feedback': _feedbackController.text,
         'uid': user_Id,
-        'type':'User',
-        'user':username_user,
+        'type': 'User',
+        'user': username_user,
         // Add any additional parameters needed for the API
       },
     );
@@ -128,8 +138,11 @@ class _FeedbackPageState extends State<FeedbackPage> {
           return AlertDialog(
             title: Text('Feedback Submitted'),
             content: Column(
+              mainAxisSize: MainAxisSize.min, // Set mainAxisSize to min
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 buildLottieAnimation(),
+                SizedBox(height: 16),
                 Text('Thank you for your feedback!'),
               ],
             ),
@@ -154,6 +167,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
       );
     }
   }
+
 
   @override
   void dispose() {

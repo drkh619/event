@@ -39,7 +39,7 @@ dependencies:
   image_picker: ^1.0.2
   flutter_animated_button:
   lottie:
-  google_fonts:
+  google_fonts: 6.1.0
   shared_preferences:
   http:
   url_launcher:
@@ -59,6 +59,9 @@ dependencies:
   table_calendar: ^3.0.0
   flutter_event_calendar:
   qr_flutter:
+  flutter_local_notifications:
+  timezone:
+  qr_code_scanner:
 
 dev_dependencies:
   flutter_test:
